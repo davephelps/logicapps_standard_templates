@@ -1,0 +1,83 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "parameters": {
+            "mapLookups": {
+                "type": "Array",
+                "defaultValue": []
+            }
+        },
+        "actions": {
+            "Extract_Metadata": {
+                "type": "Xslt",
+                "inputs": {
+                    "content": "@xml(triggerBody())",
+                    "map": {
+                        "source": "LogicApp",
+                        "name": "GetXmlMetadata.xslt"
+                    }
+                },
+                "runAfter": {},
+                "description": "First XSLT extracts namespace and root node to determine which map to use"
+            },
+            "Find_Map": {
+                "type": "Query",
+                "inputs": {
+                    "from": "@parameters('mapLookups')",
+                    "where": "@and(equals(item()['namespace'], xpath(body('Extract_Metadata'), 'string(//namespace)')), equals(item()['rootNode'], xpath(body('Extract_Metadata'), 'string(//rootNode)')))"
+                },
+                "runAfter": {
+                    "Extract_Metadata": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "description": "Query looks up the correct map based on extracted metadata"
+            },
+            "Transform_XML": {
+                "type": "Xslt",
+                "inputs": {
+                    "content": "@xml(triggerBody())",
+                    "map": {
+                        "source": "LogicApp",
+                        "name": "@first(body('Find_Map'))['mapPath']"
+                    }
+                },
+                "runAfter": {
+                    "Find_Map": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "description": "Dynamic XSLT transformation - map name determined at runtime from lookup"
+            },
+            "Return_Transformed": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/xml"
+                    },
+                    "body": "@body('Transform_XML')"
+                },
+                "runAfter": {
+                    "Transform_XML": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                    "method": "POST"
+                },
+                "description": "XSLT Dynamic transformation pattern - determines map at runtime based on message metadata and lookup table."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

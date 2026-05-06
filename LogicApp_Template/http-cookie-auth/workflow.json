@@ -1,0 +1,83 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Login_Get_Session": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('loginUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": {
+                        "username": "@appsetting('apiUsername')",
+                        "password": "@appsetting('apiPassword')"
+                    }
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "Login action to obtain session cookie (e.g., JSESSIONID)"
+            },
+            "Extract_Session_Cookie": {
+                "type": "Compose",
+                "inputs": "@outputs('Login_Get_Session')['headers']['Set-Cookie']",
+                "runAfter": {
+                    "Login_Get_Session": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "description": "Extract session cookie from login response headers"
+            },
+            "Call_API_With_Cookie": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('protectedApiUrl')",
+                    "method": "GET",
+                    "cookie": "@outputs('Extract_Session_Cookie')"
+                },
+                "runAfter": {
+                    "Extract_Session_Cookie": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "CRITICAL: Use 'cookie' parameter at inputs level for session cookies. Do NOT use Cookie header or Authorization header."
+            },
+            "Return_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Call_API_With_Cookie')"
+                },
+                "runAfter": {
+                    "Call_API_With_Cookie": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "HTTP with Cookie Authentication pattern - use 'cookie' parameter for session-based auth (JSESSIONID). NOT Cookie header."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

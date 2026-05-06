@@ -1,0 +1,16 @@
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\CustomCode.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\CustomCode.deps.json
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\CustomCode.pdb
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Azure.Functions.Worker.Extensions.Abstractions.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Azure.Functions.Extensions.Workflows.Abstractions.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Azure.Functions.Extensions.Workflows.Sdk.Package.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Azure.Functions.Extensions.Workflows.Sdk.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.DependencyInjection.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.Logging.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.Options.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Extensions.Primitives.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\Microsoft.Win32.SystemEvents.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\System.Drawing.Common.dll
+D:\Dev\CopilotWith\Middleware\github-copilotwith-middleware-345\Azure\Logic_Apps_Standard\template\Workspace_Template\CustomCode\bin\Debug\net8\publish\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll

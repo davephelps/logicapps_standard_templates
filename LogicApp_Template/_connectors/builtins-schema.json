@@ -1,0 +1,480 @@
+{
+  "schemaUrl": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json",
+  "generatedUtc": "2026-05-06T13:16:16.3793149Z",
+  "$comment": "Auto-generated from Microsoft's published workflow definition schema. Do not hand-edit. Pair with builtins-runtime.json (bundle ops) and connectors.json (service providers). Trigger types are extracted from the schema's trigger oneOf union (no master enum exists).",
+  "coverage": {
+    "actionTypesInMasterEnum": 39,
+    "actionTypesCatalogued": 39,
+    "actionTypesMissing": [],
+    "actionTypesAddedAsStub": [
+      "Batch",
+      "HttpWebhook",
+      "Recurrence",
+      "Request",
+      "SlidingWindow"
+    ],
+    "triggerTypesCatalogued": 8
+  },
+  "triggers": {
+    "ApiConnection": {
+      "type": "ApiConnection",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema triggers oneOf #1"
+    },
+    "ApiManagement": {
+      "type": "ApiManagement",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema triggers oneOf #3"
+    },
+    "Batch": {
+      "type": "Batch",
+      "kind": [],
+      "inputProperties": [
+        "batchGroupName",
+        "configurations",
+        "mode"
+      ],
+      "$source": "schema triggers oneOf #4"
+    },
+    "Http": {
+      "type": "Http",
+      "kind": [],
+      "inputProperties": [
+        "body",
+        "cookie",
+        "headers",
+        "method",
+        "queries",
+        "uri"
+      ],
+      "$source": "schema triggers oneOf #5"
+    },
+    "HttpWebhook": {
+      "type": "HttpWebhook",
+      "kind": [],
+      "inputProperties": [
+        "accessKeyType",
+        "subscribe",
+        "unsubscribe"
+      ],
+      "$source": "schema triggers oneOf #6"
+    },
+    "Recurrence": {
+      "type": "Recurrence",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema triggers oneOf #7"
+    },
+    "Request": {
+      "type": "Request",
+      "kind": [
+        "Alert",
+        "AzureMonitorAlert",
+        "Button",
+        "EventGrid",
+        "Geofence",
+        "Http",
+        "PowerApp",
+        "SecurityCenterAlert"
+      ],
+      "inputProperties": [
+        "host",
+        "method",
+        "operationId",
+        "parameters",
+        "relativePath",
+        "schema"
+      ],
+      "$source": "schema triggers oneOf #8"
+    },
+    "SlidingWindow": {
+      "type": "SlidingWindow",
+      "kind": [],
+      "inputProperties": "delay",
+      "$source": "schema triggers oneOf #9"
+    }
+  },
+  "actions": {
+    "ApiConnection": {
+      "type": "ApiConnection",
+      "kind": [],
+      "inputProperties": [
+        "authentication",
+        "body",
+        "headers",
+        "host",
+        "method",
+        "operationOptions",
+        "path",
+        "queries",
+        "retryPolicy"
+      ],
+      "$source": "schema actions oneOf #1"
+    },
+    "ApiConnectionWebhook": {
+      "type": "ApiConnectionWebhook",
+      "kind": [],
+      "inputProperties": [
+        "accessKeyType",
+        "schema"
+      ],
+      "$source": "schema actions oneOf #2"
+    },
+    "ApiManagement": {
+      "type": "ApiManagement",
+      "kind": [],
+      "inputProperties": [
+        "api",
+        "body",
+        "headers",
+        "method",
+        "pathTemplate",
+        "queries",
+        "subscriptionKey"
+      ],
+      "$source": "schema actions oneOf #3"
+    },
+    "SendToBatch": {
+      "type": "SendToBatch",
+      "kind": [],
+      "inputProperties": [
+        "batchName",
+        "content",
+        "host",
+        "messageId",
+        "partitionName"
+      ],
+      "$source": "schema actions oneOf #4"
+    },
+    "Compose": {
+      "type": "Compose",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #5"
+    },
+    "Expression": {
+      "type": "Expression",
+      "kind": [
+        "AddToTime"
+      ],
+      "inputProperties": [
+        "baseTime",
+        "interval",
+        "timeUnit"
+      ],
+      "$source": "schema actions oneOf #6"
+    },
+    "Expression(ConvertTimeZone)": {
+      "type": "Expression",
+      "kind": [
+        "ConvertTimeZone"
+      ],
+      "inputProperties": [
+        "baseTime",
+        "destinationTimeZone",
+        "formatString",
+        "sourceTimeZone"
+      ],
+      "$source": "schema actions oneOf #7"
+    },
+    "Expression(CurrentTime)": {
+      "type": "Expression",
+      "kind": [
+        "CurrentTime"
+      ],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #8"
+    },
+    "Expression(GetFutureTime)": {
+      "type": "Expression",
+      "kind": [
+        "GetFutureTime"
+      ],
+      "inputProperties": [
+        "interval",
+        "timeUnit"
+      ],
+      "$source": "schema actions oneOf #9"
+    },
+    "Expression(GetPastTime)": {
+      "type": "Expression",
+      "kind": [
+        "GetPastTime"
+      ],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #10"
+    },
+    "Expression(SubtractFromTime)": {
+      "type": "Expression",
+      "kind": [
+        "SubtractFromTime"
+      ],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #11"
+    },
+    "FlatFileDecoding": {
+      "type": "FlatFileDecoding",
+      "kind": [],
+      "inputProperties": [
+        "content",
+        "integrationAccount"
+      ],
+      "$source": "schema actions oneOf #12"
+    },
+    "FlatFileEncoding": {
+      "type": "FlatFileEncoding",
+      "kind": [],
+      "inputProperties": "emptyNodeGenerationMode",
+      "$source": "schema actions oneOf #13"
+    },
+    "Function": {
+      "type": "Function",
+      "kind": [],
+      "inputProperties": [
+        "body",
+        "function",
+        "functionApp",
+        "headers",
+        "method",
+        "queries",
+        "uri"
+      ],
+      "$source": "schema actions oneOf #14"
+    },
+    "Http": {
+      "type": "Http",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #15"
+    },
+    "IntegrationAccountArtifactLookup": {
+      "type": "IntegrationAccountArtifactLookup",
+      "kind": [],
+      "inputProperties": [
+        "artifaceName",
+        "artifactType"
+      ],
+      "$source": "schema actions oneOf #17"
+    },
+    "Join": {
+      "type": "Join",
+      "kind": [],
+      "inputProperties": [
+        "from",
+        "joinWith"
+      ],
+      "$source": "schema actions oneOf #18"
+    },
+    "Liquid": {
+      "type": "Liquid",
+      "kind": [
+        "JsonToJson",
+        "JsonToText",
+        "XmlToJson",
+        "XmlToText"
+      ],
+      "inputProperties": [
+        "content",
+        "integrationAccount",
+        "transformedContentSchema"
+      ],
+      "$source": "schema actions oneOf #19"
+    },
+    "ParseJson": {
+      "type": "ParseJson",
+      "kind": [],
+      "inputProperties": [
+        "content",
+        "schema"
+      ],
+      "$source": "schema actions oneOf #20"
+    },
+    "Query": {
+      "type": "Query",
+      "kind": [],
+      "inputProperties": [
+        "from",
+        "where"
+      ],
+      "$source": "schema actions oneOf #21"
+    },
+    "Response": {
+      "type": "Response",
+      "kind": [],
+      "inputProperties": [
+        "body",
+        "headers",
+        "schema",
+        "statusCode"
+      ],
+      "$source": "schema actions oneOf #22"
+    },
+    "Foreach": {
+      "type": "Foreach",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #23"
+    },
+    "If": {
+      "type": "If",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #24"
+    },
+    "Scope": {
+      "type": "Scope",
+      "kind": [],
+      "inputProperties": "actions",
+      "$source": "schema actions oneOf #25"
+    },
+    "Switch": {
+      "type": "Switch",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #26"
+    },
+    "Until": {
+      "type": "Until",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #27"
+    },
+    "Select": {
+      "type": "Select",
+      "kind": [],
+      "inputProperties": [
+        "from",
+        "select"
+      ],
+      "$source": "schema actions oneOf #28"
+    },
+    "Table": {
+      "type": "Table",
+      "kind": [],
+      "inputProperties": [
+        "columns",
+        "format",
+        "from"
+      ],
+      "$source": "schema actions oneOf #29"
+    },
+    "Terminate": {
+      "type": "Terminate",
+      "kind": [],
+      "inputProperties": [
+        "runError",
+        "runStatus"
+      ],
+      "$source": "schema actions oneOf #30"
+    },
+    "AppendToArrayVariable": {
+      "type": "AppendToArrayVariable",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #31"
+    },
+    "AppendToStringVariable": {
+      "type": "AppendToStringVariable",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #32"
+    },
+    "DecrementVariable": {
+      "type": "DecrementVariable",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #33"
+    },
+    "IncrementVariable": {
+      "type": "IncrementVariable",
+      "kind": [],
+      "inputProperties": [
+        "name",
+        "type",
+        "value"
+      ],
+      "$source": "schema actions oneOf #34"
+    },
+    "InitializeVariable": {
+      "type": "InitializeVariable",
+      "kind": [],
+      "inputProperties": "variables",
+      "$source": "schema actions oneOf #35"
+    },
+    "SetVariable": {
+      "type": "SetVariable",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #36"
+    },
+    "Wait": {
+      "type": "Wait",
+      "kind": [],
+      "inputProperties": [
+        "interval",
+        "until"
+      ],
+      "$source": "schema actions oneOf #37"
+    },
+    "Workflow": {
+      "type": "Workflow",
+      "kind": [],
+      "inputProperties": [
+        "body",
+        "headers",
+        "host"
+      ],
+      "$source": "schema actions oneOf #38"
+    },
+    "XmlValidation": {
+      "type": "XmlValidation",
+      "kind": [],
+      "inputProperties": null,
+      "$source": "schema actions oneOf #39"
+    },
+    "Xslt": {
+      "type": "Xslt",
+      "kind": [],
+      "inputProperties": [
+        "content",
+        "function",
+        "integrationAccount",
+        "parameters",
+        "transformOptions"
+      ],
+      "$source": "schema actions oneOf #40"
+    },
+    "Batch": {
+      "type": "Batch",
+      "kind": [],
+      "inputProperties": [],
+      "$source": "schema actions master enum (oneOf entry is $ref to trigger; see triggers for shape)"
+    },
+    "HttpWebhook": {
+      "type": "HttpWebhook",
+      "kind": [],
+      "inputProperties": [],
+      "$source": "schema actions master enum (oneOf entry is $ref to trigger; see triggers for shape)"
+    },
+    "Recurrence": {
+      "type": "Recurrence",
+      "kind": [],
+      "inputProperties": [],
+      "$source": "schema actions master enum (oneOf entry is $ref to trigger; see triggers for shape)"
+    },
+    "Request": {
+      "type": "Request",
+      "kind": [],
+      "inputProperties": [],
+      "$source": "schema actions master enum (oneOf entry is $ref to trigger; see triggers for shape)"
+    },
+    "SlidingWindow": {
+      "type": "SlidingWindow",
+      "kind": [],
+      "inputProperties": [],
+      "$source": "schema actions master enum (oneOf entry is $ref to trigger; see triggers for shape)"
+    }
+  }
+}

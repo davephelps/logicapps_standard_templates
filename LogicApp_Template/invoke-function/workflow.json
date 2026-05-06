@@ -1,0 +1,45 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Call_Custom_Function": {
+                "type": "InvokeFunction",
+                "inputs": {
+                    "functionName": "ProcessOrderData",
+                    "parameters": {
+                        "orderId": "@triggerBody()?.orderId",
+                        "customerData": "@string(triggerBody()?.customer)"
+                    }
+                },
+                "runAfter": {},
+                "description": "InvokeFunction calls Azure Functions custom code. Use simple types (string, int) for parameters. Avoid JObject/dynamic."
+            },
+            "Return_Result": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Call_Custom_Function')"
+                },
+                "runAfter": {
+                    "Call_Custom_Function": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "InvokeFunction action pattern - calls Azure Functions custom code with WorkflowActionTrigger. Use simple parameter types."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

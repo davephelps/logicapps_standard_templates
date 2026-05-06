@@ -1,0 +1,55 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Call_API_With_Retry": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('externalApiUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@triggerBody()",
+                    "retryPolicy": {
+                        "type": "exponential",
+                        "count": 4,
+                        "interval": "PT7S",
+                        "minimumInterval": "PT5S",
+                        "maximumInterval": "PT1H"
+                    }
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "HTTP with exponential backoff retry policy"
+            },
+            "Return_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@body('Call_API_With_Retry')"
+                },
+                "runAfter": {
+                    "Call_API_With_Retry": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "HTTP with Retry Policy pattern - use exponential or fixed retry policies for resilient API calls."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

@@ -1,0 +1,29 @@
+{
+  "folders": [
+    {
+      "name": "LogicApp_Template",
+      "path": "./LogicApp_Template"
+    },
+    {
+      "name": "CustomCode",
+      "path": "./CustomCode"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.env.windows": {
+      "PATH": "C:\\Users\\daphelps\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
+    },
+    "omnisharp.dotNetCliPaths": [
+      "C:\\Users\\daphelps\\.azurelogicapps\\dependencies\\DotNetSDK"
+    ],
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".mule": true
+    },
+    "azurite.location": "C:\\azurite"
+  }
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "name": "CustomCode",
+    "scriptFile": "CustomCode.dll",
+    "entryPoint": "Contoso.Integration.CustomCode.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "zipCode",
+        "direction": "In",
+        "type": "workflowActionTrigger",
+        "properties": {}
+      }
+    ]
+  }
+]

@@ -1,0 +1,99 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Business_Logic": {
+                "type": "Scope",
+                "actions": {
+                    "Process_Request": {
+                        "type": "Http",
+                        "inputs": {
+                            "uri": "@appsetting('externalServiceUrl')",
+                            "method": "POST",
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": "@triggerBody()"
+                        },
+                        "runtimeConfiguration": {
+                            "contentTransfer": {
+                                "transferMode": "Chunked"
+                            }
+                        }
+                    }
+                },
+                "runAfter": {},
+                "description": "Child workflow business logic scope"
+            },
+            "Catch_Exceptions": {
+                "type": "Scope",
+                "actions": {
+                    "Filter_Errors": {
+                        "type": "Query",
+                        "inputs": {
+                            "from": "@result('Business_Logic')",
+                            "where": "@equals(item()?.status,'Failed')"
+                        }
+                    },
+                    "Return_Failure": {
+                        "type": "Response",
+                        "kind": "Http",
+                        "inputs": {
+                            "statusCode": 500,
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": {
+                                "status": "failed",
+                                "error": {
+                                    "code": "@coalesce(body('Filter_Errors')[0]?.error?.code, 'UnknownError')",
+                                    "message": "@coalesce(body('Filter_Errors')[0]?.error?.message, 'An error occurred')"
+                                }
+                            }
+                        },
+                        "runAfter": {
+                            "Filter_Errors": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    }
+                },
+                "runAfter": {
+                    "Business_Logic": [
+                        "FAILED"
+                    ]
+                },
+                "description": "Exception handler returns failure response to parent workflow"
+            },
+            "Return_Success": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": {
+                        "status": "success",
+                        "data": "@body('Process_Request')"
+                    }
+                },
+                "runAfter": {
+                    "Business_Logic": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "ChildWorkflowTrigger": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Child Workflow pattern - includes success and failure responses back to parent. Name trigger with business meaning."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

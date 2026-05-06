@@ -1,0 +1,41 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Execute_CSharp_Script": {
+                "type": "CSharpScriptCode",
+                "inputs": {
+                    "CodeFile": "execute_csharp_script_code.csx"
+                },
+                "runAfter": {},
+                "description": "Inline C# script for simple transformations (<20 lines). Script file must be in same folder as workflow.json"
+            },
+            "Return_Result": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Execute_CSharp_Script')"
+                },
+                "runAfter": {
+                    "Execute_CSharp_Script": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Inline C# Script transformation pattern - for simple transformations under 20 lines. Use Azure Functions for complex logic."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

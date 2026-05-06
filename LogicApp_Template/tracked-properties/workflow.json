@@ -1,0 +1,70 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Request_Tracking": {
+                "type": "Compose",
+                "inputs": {
+                    "orderId": "@triggerBody()?['orderId']",
+                    "customerName": "@triggerBody()?['customerName']"
+                },
+                "trackedProperties": {
+                    "orderId": "@action().outputs?.orderId",
+                    "customerName": "@action().outputs?.customerName"
+                },
+                "runAfter": {},
+                "description": "For trigger payload tracking, create a Compose action and add trackedProperties referencing @action().outputs"
+            },
+            "Call_External_API": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('externalApiUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@triggerBody()"
+                },
+                "runAfter": {
+                    "Request_Tracking": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "trackedProperties": {
+                    "requestOrderId": "@action().inputs?.body?.orderId",
+                    "responseStatus": "@action().outputs?.statusCode",
+                    "responseId": "@action().outputs?.body?.transactionId"
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "Tracked properties on actions reference @action().inputs or @action().outputs for that action only."
+            },
+            "Return_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@body('Call_External_API')"
+                },
+                "runAfter": {
+                    "Call_External_API": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Tracked Properties pattern - use @action() to reference current action's inputs/outputs. Cannot reference other actions."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

@@ -1,0 +1,15 @@
+{
+  "$comment": "Tiny hand-curated overlay for Logic Apps Standard runtime additions that are NOT in the published 2016-06-01 schema and NOT exposed via the operationGroups API. Each entry MUST cite a verifiable source. Anything that fits in builtins-schema.json or builtins-runtime.json belongs there, not here. If this file grows beyond a handful of entries, that is a signal to investigate why.",
+  "actions": {
+    "Http": {
+      "authenticationOverlay": {
+        "ManagedServiceIdentity": {
+          "type":       "ManagedServiceIdentity",
+          "audience":   "string (resource the token is for)",
+          "identity":   "string (managed identity resource id, optional; defaults to system-assigned)",
+          "$justification": "Logic Apps Standard supports MSI auth on the Http action via the workflow extension. Documented at https://learn.microsoft.com/azure/logic-apps/authenticate-with-managed-identity. Not in the classic 2016-06-01 schema's Http.authentication oneOf."
+        }
+      }
+    }
+  }
+}

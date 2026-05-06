@@ -1,0 +1,52 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Call_External_API": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('externalApiUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-Correlation-Id": "@guid()"
+                    },
+                    "body": "@triggerBody()"
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "Basic HTTP action - use for simple API calls without authentication or with API key in headers"
+            },
+            "Return_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Call_External_API')"
+                },
+                "runAfter": {
+                    "Call_External_API": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "HTTP Action Basic pattern - simple HTTP calls with optional headers."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

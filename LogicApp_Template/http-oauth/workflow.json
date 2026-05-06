@@ -1,0 +1,58 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Call_Secured_API": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('securedApiUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@triggerBody()",
+                    "authentication": {
+                        "type": "ActiveDirectoryOAuth",
+                        "tenant": "@appsetting('aadTenantId')",
+                        "audience": "@appsetting('aadAudience')",
+                        "clientId": "@appsetting('aadClientId')",
+                        "secret": "@appsetting('aadClientSecret')"
+                    }
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "HTTP with OAuth - use authentication block for Azure AD/Entra ID client credentials flow. Do NOT use separate token request."
+            },
+            "Return_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Call_Secured_API')"
+                },
+                "runAfter": {
+                    "Call_Secured_API": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "HTTP with OAuth Authentication pattern - uses built-in ActiveDirectoryOAuth for client credentials flow."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

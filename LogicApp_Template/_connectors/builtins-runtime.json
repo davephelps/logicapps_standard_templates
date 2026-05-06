@@ -1,0 +1,1259 @@
+{
+  "bundleVersion": "1.161.25",
+  "generatedUtc": "2026-05-06T12:51:40.4099951Z",
+  "$comment": "Bundle-added built-in operations exposed under /connectionProviders/*. Each operation's 'operationType' field is the canonical 'type' string for workflow.json. Workflow-engine primitives (Http, If, Switch, Foreach, Compose, ParseJson, Scope, etc.) are NOT here — see builtins.json.",
+  "connectionProviders": {
+    "dataOperationNew": {
+      "connectionProviderId": "connectionProviders/dataOperationNew",
+      "actions": {
+        "composeNew": {
+          "summary": "Compose",
+          "operationType": "Compose",
+          "parameters": [],
+          "required": []
+        }
+      },
+      "triggers": {}
+    },
+    "localWorkflowOperation": {
+      "connectionProviderId": "connectionProviders/localWorkflowOperation",
+      "actions": {
+        "invokeWorkflow": {
+          "summary": "Call workflow in this logic app",
+          "operationType": "Workflow",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "object"
+            },
+            {
+              "name": "body",
+              "description": "The trigger body"
+            },
+            {
+              "name": "headers",
+              "description": "The trigger headers."
+            }
+          ],
+          "required": [
+            "host"
+          ]
+        },
+        "invokeNestedAgent": {
+          "summary": "Send a task to a nested agent",
+          "operationType": "NestedAgent",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "object"
+            },
+            {
+              "name": "body",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "host",
+            "body"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "xmlOperations": {
+      "connectionProviderId": "connectionProviders/xmlOperations",
+      "actions": {
+        "xmlTransform": {
+          "summary": "Transform XML",
+          "operationType": "Xslt",
+          "parameters": [
+            {
+              "name": "content",
+              "type": "string",
+              "description": "Content"
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "xsltParameters",
+              "type": "object",
+              "description": "XSLT Parameters."
+            },
+            {
+              "name": "xmlExtensionObject",
+              "description": "XML Extension Object."
+            },
+            {
+              "name": "transformOptions",
+              "type": "string",
+              "description": "Transform options."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "xmlValidation": {
+          "summary": "Validate XML",
+          "operationType": "XmlValidation",
+          "parameters": [
+            {
+              "name": "content",
+              "type": "string",
+              "description": "The content to validate."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "XmlCompose": {
+          "summary": "Compose XML with schema",
+          "operationType": "XmlCompose",
+          "parameters": [
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "rootNodeQualifiedName",
+              "type": "string",
+              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
+            },
+            {
+              "name": "dateTimeFormat",
+              "type": "string",
+              "description": "The date and time format specifier, for example, 'dddd, MMM dd yyyy HH:mm:ss zzz'."
+            },
+            {
+              "name": "content",
+              "type": "object",
+              "description": "The XML compose input parameters."
+            },
+            {
+              "name": "xmlWriterSettings",
+              "type": "object",
+              "description": "The settings to control XML serialization behavior."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "XmlParse": {
+          "summary": "Parse XML with schema",
+          "operationType": "XmlParse",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The XML content to parse."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "xmlReaderSettings",
+              "type": "object"
+            },
+            {
+              "name": "jsonWriterSettings",
+              "type": "object"
+            },
+            {
+              "name": "rootNodeQualifiedName",
+              "type": "string",
+              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "dataMapperOperations": {
+      "connectionProviderId": "connectionProviders/dataMapperOperations",
+      "actions": {
+        "xsltTransform": {
+          "summary": "Transform using Data Mapper XSLT",
+          "operationType": "Xslt",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "Content"
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "liquidOperations": {
+      "connectionProviderId": "connectionProviders/liquidOperations",
+      "actions": {
+        "liquidJsonToJson": {
+          "summary": "Transform JSON to JSON",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidJsonToText": {
+          "summary": "Transform JSON to text",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidXmlToJson": {
+          "summary": "Transform XML to JSON",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidXmlToText": {
+          "summary": "Transform XML to text",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "azureFunctionOperation": {
+      "connectionProviderId": "/connectionProviders/azureFunctionOperation",
+      "actions": {
+        "azureFunction": {
+          "summary": "Call an Azure function",
+          "operationType": "Function",
+          "parameters": [
+            {
+              "name": "method",
+              "type": "string",
+              "enum": [
+                "GET",
+                "PUT",
+                "POST",
+                "PATCH",
+                "DELETE"
+              ],
+              "description": "Method"
+            },
+            {
+              "name": "body",
+              "description": "The context object to pass to the function: { .. }"
+            },
+            {
+              "name": "headers",
+              "type": "object",
+              "description": "The request headers"
+            },
+            {
+              "name": "queries",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "method"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "apiManagementOperation": {
+      "connectionProviderId": "/connectionProviders/apiManagementOperation",
+      "actions": {
+        "apiManagement": {
+          "summary": "Call an Azure API Management API",
+          "operationType": "ApiManagement",
+          "parameters": [
+            {
+              "name": "apiManagement",
+              "type": "object"
+            },
+            {
+              "name": "operationDetails",
+              "description": "The parameters for this operation."
+            }
+          ],
+          "required": [
+            "apiManagement"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "inlineCode": {
+      "connectionProviderId": "connectionProviders/inlineCode",
+      "actions": {
+        "javaScriptCode": {
+          "summary": "Execute JavaScript code",
+          "operationType": "JavaScriptCode",
+          "parameters": [
+            {
+              "name": "code",
+              "description": "The JavaScript code to execute."
+            },
+            {
+              "name": "explicitDependencies",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "code"
+          ]
+        },
+        "cSharpScriptCode": {
+          "summary": "Execute C# script code",
+          "operationType": "CSharpScriptCode",
+          "parameters": [
+            {
+              "name": "CodeFile",
+              "description": "The C# script to execute"
+            }
+          ],
+          "required": [
+            "CodeFile"
+          ]
+        },
+        "powershellCode": {
+          "summary": "Execute PowerShell script code",
+          "operationType": "PowershellCode",
+          "parameters": [
+            {
+              "name": "CodeFile",
+              "description": "The PowerShell script to execute."
+            }
+          ],
+          "required": [
+            "CodeFile"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "flatFileOperations": {
+      "connectionProviderId": "connectionProviders/flatFileOperations",
+      "actions": {
+        "flatFileDecoding": {
+          "summary": "Decode flat file",
+          "operationType": "FlatFileDecoding",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The flat file content to decode."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "flatFileEncoding": {
+          "summary": "Encode flat file",
+          "operationType": "FlatFileEncoding",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The XML content to encode."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "emptyNodeGenerationMode",
+              "type": "string",
+              "enum": [
+                "ForcedDisabled",
+                "HonorSchemaNodeProperty",
+                "ForcedEnabled"
+              ],
+              "description": "The mode of empty node generation for flat file encoding."
+            },
+            {
+              "name": "xmlNormalization",
+              "type": "boolean",
+              "description": "The setting to enable or disable XML normalization for flat file encoding."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "as2Operations": {
+      "connectionProviderId": "connectionProviders/as2Operations",
+      "actions": {
+        "as2Encode": {
+          "summary": "Encode AS2",
+          "operationType": "AS2Encode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The message to encode."
+            },
+            {
+              "name": "as2From",
+              "type": "string",
+              "description": "The AS2 sender."
+            },
+            {
+              "name": "as2To",
+              "type": "string",
+              "description": "The AS2 receiver."
+            },
+            {
+              "name": "contentType",
+              "type": "string",
+              "description": "The content type."
+            },
+            {
+              "name": "fileName",
+              "type": "string",
+              "description": "The file name."
+            },
+            {
+              "name": "b2bTrackingId",
+              "type": "string",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "as2From",
+            "as2To"
+          ]
+        },
+        "as2Decode": {
+          "summary": "Decode AS2",
+          "operationType": "AS2Decode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The message to decode."
+            },
+            {
+              "name": "messageHeaders",
+              "type": "object",
+              "description": "The message headers."
+            },
+            {
+              "name": "b2bTrackingId",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "messageToDecode",
+            "messageHeaders"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "swiftOperations": {
+      "connectionProviderId": "connectionProviders/swiftOperations",
+      "actions": {
+        "SwiftMTEncode": {
+          "summary": "Encode SWIFT MT",
+          "operationType": "SwiftMTEncode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The SWIFT message to encode."
+            },
+            {
+              "name": "messageValidation",
+              "type": "string",
+              "enum": [
+                "Enable",
+                "Disable"
+              ],
+              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "messageValidation"
+          ]
+        },
+        "SwiftMTDecode": {
+          "summary": "Decode SWIFT MT",
+          "operationType": "SwiftMTDecode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The SWIFT MT message to decode."
+            },
+            {
+              "name": "messageValidation",
+              "type": "string",
+              "enum": [
+                "Enable",
+                "Disable"
+              ],
+              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate both."
+            }
+          ],
+          "required": [
+            "messageToDecode",
+            "messageValidation"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "integrationAccountOperations": {
+      "connectionProviderId": "connectionProviders/integrationAccountOperations",
+      "actions": {
+        "integrationAccountArtifactLookup": {
+          "summary": "Integration account artifact lookup",
+          "operationType": "IntegrationAccountArtifactLookup",
+          "parameters": [
+            {
+              "name": "artifactType",
+              "type": "string",
+              "enum": [
+                "Schema",
+                "Map",
+                "Partner",
+                "Agreement",
+                "RosettaNetProcessConfiguration"
+              ],
+              "description": "The type of artifact to fetch."
+            },
+            {
+              "name": "artifactName",
+              "type": "string",
+              "description": "The name of the artifact to fetch."
+            }
+          ],
+          "required": [
+            "artifactType",
+            "artifactName"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "batch": {
+      "connectionProviderId": "/connectionProviders/batch",
+      "actions": {
+        "sendToBatch": {
+          "summary": "Send to batch",
+          "operationType": "SendToBatch",
+          "parameters": [
+            {
+              "name": "batchName",
+              "type": "string",
+              "description": "The name of the batch where to send the message."
+            },
+            {
+              "name": "content",
+              "description": "The message to send to the batch."
+            },
+            {
+              "name": "partitionName",
+              "type": "string",
+              "description": "The name of the partition where to send the message."
+            },
+            {
+              "name": "messageId",
+              "type": "string",
+              "description": "The message identifier."
+            },
+            {
+              "name": "host",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "host",
+            "batchName",
+            "content"
+          ]
+        }
+      },
+      "triggers": {
+        "batch": {
+          "summary": "Batch trigger",
+          "operationType": "Batch",
+          "parameters": [
+            {
+              "name": "mode",
+              "type": "string",
+              "description": "The batch mode to use."
+            },
+            {
+              "name": "configurations",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "mode",
+            "configurations"
+          ]
+        }
+      }
+    },
+    "rosettaNetOperations": {
+      "connectionProviderId": "connectionProviders/rosettaNetOperations",
+      "actions": {
+        "rosettaNetEncode": {
+          "summary": "Encode RosettaNet",
+          "operationType": "RosettaNetEncode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The message to encode."
+            },
+            {
+              "name": "hostPartnerName",
+              "type": "string",
+              "description": "The host partner name."
+            },
+            {
+              "name": "guestPartnerName",
+              "type": "string",
+              "description": "The guest partner name."
+            },
+            {
+              "name": "processConfigurationCode",
+              "type": "string",
+              "description": "The partner interface process (PIP) code."
+            },
+            {
+              "name": "processConfigurationVersion",
+              "type": "string",
+              "description": "The partner Interface Processes (PIP) version."
+            },
+            {
+              "name": "processConfigurationInstanceIdentity",
+              "type": "string",
+              "description": "The partner Interface Processes (PIP) instance identity."
+            },
+            {
+              "name": "messageType",
+              "type": "string",
+              "enum": [
+                "Action",
+                "Response",
+                "Signal"
+              ],
+              "description": "The message type."
+            },
+            {
+              "name": "trackingId",
+              "type": "string",
+              "description": "The tracking ID."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            },
+            {
+              "name": "attachments",
+              "type": "array",
+              "description": "The RosettaNet attachments."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "guestPartnerName",
+            "hostPartnerName",
+            "processConfigurationCode",
+            "processConfigurationVersion",
+            "processConfigurationInstanceIdentity",
+            "messageType",
+            "homeRole"
+          ]
+        },
+        "rosettaNetDecode": {
+          "summary": "Decode RosettaNet",
+          "operationType": "RosettaNetDecode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The message to decode."
+            },
+            {
+              "name": "messageHeaders",
+              "type": "object",
+              "description": "The message headers."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            }
+          ],
+          "required": [
+            "messageToDecode",
+            "messageHeaders",
+            "homeRole"
+          ]
+        },
+        "rosettaNetWaitForResponse": {
+          "summary": "Wait for RosettaNet response",
+          "operationType": "RosettaNetWaitForResponse",
+          "parameters": [
+            {
+              "name": "serviceContent",
+              "description": "The original message."
+            },
+            {
+              "name": "processInstanceIdentity",
+              "type": "string",
+              "description": "The Partner Interface Processes (PIP) instance identity."
+            },
+            {
+              "name": "retryCount",
+              "type": "integer",
+              "description": "The retry count."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            },
+            {
+              "name": "pollingInterval",
+              "type": "object",
+              "description": "The polling interval."
+            }
+          ],
+          "required": [
+            "serviceContent",
+            "processInstanceIdentity",
+            "homeRole",
+            "retryCount"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "localFunctionOperation": {
+      "connectionProviderId": "connectionProviders/localFunctionOperation",
+      "actions": {
+        "invokeFunction": {
+          "summary": "Call a local function in this logic app",
+          "operationType": "InvokeFunction",
+          "parameters": [
+            {
+              "name": "functionName",
+              "type": "string",
+              "description": "The name for the function."
+            },
+            {
+              "name": "parameters",
+              "type": "object",
+              "description": "The function parameters."
+            }
+          ],
+          "required": [
+            "functionName",
+            "parameters"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "edifactOperations": {
+      "connectionProviderId": "connectionProviders/edifactOperations",
+      "actions": {
+        "EdifactDecode": {
+          "summary": "Decode EDIFACT",
+          "operationType": "EdifactDecode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The EDIFACT message to decode."
+            },
+            {
+              "name": "componentSeparator",
+              "type": "integer",
+              "description": "The component separator."
+            },
+            {
+              "name": "dataElementSeparator",
+              "type": "integer",
+              "description": "The data element separator."
+            },
+            {
+              "name": "escapeCharacter",
+              "type": "integer",
+              "description": "The release indicator."
+            },
+            {
+              "name": "repetitionSeparator",
+              "type": "integer",
+              "description": "The repetition separator."
+            },
+            {
+              "name": "segmentTerminator",
+              "type": "integer",
+              "description": "The segment terminator."
+            },
+            {
+              "name": "segmentTerminatorSuffix",
+              "type": "string",
+              "enum": [
+                "NotSpecified",
+                "None",
+                "CR",
+                "LF",
+                "CRLF"
+              ],
+              "description": "The segment terminator suffix."
+            },
+            {
+              "name": "decimalPointIndicator",
+              "type": "string",
+              "enum": [
+                "NotSpecified",
+                "Comma",
+                "Decimal"
+              ],
+              "description": "The decimal indicator."
+            },
+            {
+              "name": "payloadCharacterSet",
+              "type": "string",
+              "enum": [
+                "Legacy",
+                "UTF8",
+                "Spec"
+              ],
+              "description": "The payload character set."
+            },
+            {
+              "name": "b2bTrackingId",
+              "description": "The B2B tracking Id."
+            },
+            {
+              "name": "fallbackAgreementName",
+              "type": "string",
+              "description": "The fallback agreement name."
+            }
+          ],
+          "required": [
+            "messageToDecode"
+          ]
+        },
+        "edifactEncode": {
+          "summary": "Encode EDIFACT",
+          "operationType": "EdifactEncode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The EDIFACT message to encode."
+            },
+            {
+              "name": "senderIdentity",
+              "type": "object",
+              "description": "The sender identity."
+            },
+            {
+              "name": "receiverIdentity",
+              "type": "object",
+              "description": "The receiver identity."
+            },
+            {
+              "name": "agreementName",
+              "type": "string",
+              "description": "The name of the EDIFACT agreement."
+            },
+            {
+              "name": "b2bTrackingId",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "messageToEncode"
+          ]
+        },
+        "edifactBatchEncode": {
+          "summary": "Encode EDIFACT batch",
+          "operationType": "EdifactBatchEncode",
+          "parameters": [
+            {
+              "name": "batchMessage",
+              "type": "object"
+            },
+            {
+              "name": "senderIdentity",
+              "type": "object",
+              "description": "The sender identity."
+            },
+            {
+              "name": "receiverIdentity",
+              "type": "object",
+              "description": "The receiver identity."
+            },
+            {
+              "name": "agreementName",
+              "type": "string",
+              "description": "The name of the EDIFACT agreement."
+            },
+            {
+              "name": "b2bTrackingId",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "batchMessage"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "x12Operations": {
+      "connectionProviderId": "connectionProviders/x12Operations",
+      "actions": {
+        "x12Encode": {
+          "summary": "Encode X12",
+          "operationType": "X12Encode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The X12 message to encode."
+            },
+            {
+              "name": "senderIdentity",
+              "type": "object",
+              "description": "The sender identity."
+            },
+            {
+              "name": "receiverIdentity",
+              "type": "object",
+              "description": "The receiver identity."
+            },
+            {
+              "name": "agreementName",
+              "type": "string",
+              "description": "The name of the X12 agreement."
+            },
+            {
+              "name": "b2bTrackingId",
+              "type": "string",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "messageToEncode"
+          ]
+        },
+        "x12BatchEncode": {
+          "summary": "Encode X12 batch",
+          "operationType": "X12BatchEncode",
+          "parameters": [
+            {
+              "name": "batchMessage",
+              "type": "object"
+            },
+            {
+              "name": "senderIdentity",
+              "type": "object",
+              "description": "The sender identity."
+            },
+            {
+              "name": "receiverIdentity",
+              "type": "object",
+              "description": "The receiver identity."
+            },
+            {
+              "name": "agreementName",
+              "type": "string",
+              "description": "The name of the X12 agreement."
+            },
+            {
+              "name": "b2bTrackingId",
+              "description": "The B2B tracking Id."
+            }
+          ],
+          "required": [
+            "batchMessage"
+          ]
+        },
+        "x12Decode": {
+          "summary": "Decode X12",
+          "operationType": "X12Decode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The X12 message to decode."
+            },
+            {
+              "name": "b2bTrackingId",
+              "type": "string",
+              "description": "The B2B tracking Id."
+            },
+            {
+              "name": "fallbackAgreementName",
+              "type": "string",
+              "description": "The fallback agreement name."
+            }
+          ],
+          "required": [
+            "messageToDecode"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "hl7Operations": {
+      "connectionProviderId": "connectionProviders/hl7Operations",
+      "actions": {
+        "hl7Decode": {
+          "summary": "Decode HL7",
+          "operationType": "HL7Decode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The HL7 message to decode."
+            },
+            {
+              "name": "acknowledgementMode",
+              "type": "string",
+              "enum": [
+                "None",
+                "Original",
+                "Enhanced"
+              ],
+              "description": "The acknowledgement mode to use for HL7 message processing. 'None' generates no acknowledgements, 'Original' generates standard application acknowledgements, and 'Enhanced' generates both application and accept acknowledgements."
+            }
+          ],
+          "required": [
+            "messageToDecode"
+          ]
+        },
+        "hl7Encode": {
+          "summary": "Encode HL7",
+          "operationType": "HL7Encode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The HL7 message to encode."
+            },
+            {
+              "name": "headerToEncode",
+              "description": "The HL7 header to encode."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "headerToEncode"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "aiOperations": {
+      "connectionProviderId": "connectionProviders/aiOperations",
+      "actions": {
+        "parsedocument": {
+          "summary": "Parse a document",
+          "operationType": "ParseDocument",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The document content to parse."
+            }
+          ],
+          "required": [
+            "content"
+          ]
+        },
+        "chunktext": {
+          "summary": "Chunk text",
+          "operationType": "ChunkText",
+          "parameters": [
+            {
+              "name": "chunkingStrategy",
+              "type": "string",
+              "enum": [
+                "TokenSize"
+              ],
+              "description": "The chunking strategy to use."
+            },
+            {
+              "name": "text",
+              "description": "The text to chunk."
+            }
+          ],
+          "required": [
+            "text",
+            "chunkingStrategy"
+          ]
+        },
+        "parsedocumentwithmetadata": {
+          "summary": "Parse document with metadata",
+          "operationType": "ParseDocumentWithMetadata",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The document content to parse."
+            },
+            {
+              "name": "fileType",
+              "type": "string",
+              "enum": [
+                "PDF",
+                "DOC",
+                "DOCX",
+                "XLS",
+                "XLSX",
+                "PPT",
+                "PPTX",
+                "TXT",
+                "MD",
+                "HTML"
+              ],
+              "description": "The document's file type."
+            }
+          ],
+          "required": [
+            "content",
+            "fileType"
+          ]
+        },
+        "chunktextwithmetadata": {
+          "summary": "Chunk text with metadata",
+          "operationType": "ChunkTextWithMetadata",
+          "parameters": [
+            {
+              "name": "tokenSize",
+              "type": "integer",
+              "description": "The token size to use."
+            },
+            {
+              "name": "chunkOverlapLength",
+              "type": "integer",
+              "description": "The chunk overlap length to use."
+            },
+            {
+              "name": "pageText",
+              "description": "The page text to chunk."
+            }
+          ],
+          "required": [
+            "tokenSize",
+            "chunkOverlapLength",
+            "pageText"
+          ]
+        }
+      },
+      "triggers": {}
+    }
+  }
+}

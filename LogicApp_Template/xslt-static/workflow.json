@@ -1,0 +1,45 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Transform_XML": {
+                "type": "Xslt",
+                "inputs": {
+                    "content": "@xml(triggerBody())",
+                    "map": {
+                        "source": "LogicApp",
+                        "name": "CustomerToClient.xslt"
+                    }
+                },
+                "runAfter": {},
+                "description": "XSLT transformation with static map. Map file must be in Artifacts/Maps folder. Use @xml() to convert string to XML."
+            },
+            "Return_Transformed": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/xml"
+                    },
+                    "body": "@body('Transform_XML')"
+                },
+                "runAfter": {
+                    "Transform_XML": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "XSLT Static transformation pattern - uses fixed map name from Artifacts/Maps folder."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-16"?>
+<xs:schema xmlns="http://EDITest.TargetPatron" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" targetNamespace="http://EDITest.TargetPatron" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PatronRegistry">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="100" name="Patron">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CompleteName" type="xs:string" />
+              <xs:element minOccurs="0" name="DateOfBirth" type="xs:string" />
+              <xs:element minOccurs="0" name="GivenName" type="xs:string" />
+              <xs:element minOccurs="0" name="FamilyName" type="xs:string" />
+              <xs:element minOccurs="0" name="MembershipType" type="xs:string" />
+              <xs:element minOccurs="0" name="Honorific" type="xs:string" />
+              <xs:element name="LocationInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="roadName" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

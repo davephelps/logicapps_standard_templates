@@ -1,0 +1,124 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Prepare_Request_Data": {
+                "type": "Compose",
+                "inputs": "@triggerBody()",
+                "runAfter": {}
+            },
+            "Call_Service_A": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('serviceAUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@outputs('Prepare_Request_Data')"
+                },
+                "runAfter": {
+                    "Prepare_Request_Data": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "First parallel action - runs simultaneously with Call_Service_B because both have same runAfter dependency"
+            },
+            "Call_Service_B": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('serviceBUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@outputs('Prepare_Request_Data')"
+                },
+                "runAfter": {
+                    "Prepare_Request_Data": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "Second parallel action - runs simultaneously with Call_Service_A because both have same runAfter dependency"
+            },
+            "Call_Service_C": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('serviceCUrl')",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@outputs('Prepare_Request_Data')"
+                },
+                "runAfter": {
+                    "Prepare_Request_Data": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "description": "Third parallel action - runs simultaneously with Call_Service_A and Call_Service_B"
+            },
+            "Aggregate_Results": {
+                "type": "Compose",
+                "inputs": {
+                    "serviceAResult": "@body('Call_Service_A')",
+                    "serviceBResult": "@body('Call_Service_B')",
+                    "serviceCResult": "@body('Call_Service_C')"
+                },
+                "runAfter": {
+                    "Call_Service_A": [
+                        "SUCCEEDED"
+                    ],
+                    "Call_Service_B": [
+                        "SUCCEEDED"
+                    ],
+                    "Call_Service_C": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "description": "Waits for all parallel actions to complete before aggregating results"
+            },
+            "Return_Results": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@outputs('Aggregate_Results')"
+                },
+                "runAfter": {
+                    "Aggregate_Results": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Parallel Execution pattern - multiple actions with identical runAfter dependencies execute in parallel. NO Parallel action type exists in Logic Apps."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

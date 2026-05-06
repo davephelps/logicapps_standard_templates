@@ -1,0 +1,49 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Call_Child_Workflow": {
+                "type": "Workflow",
+                "description": "Calls another workflow in the same Logic App. Use workflow id (folder name) to reference the child.",
+                "inputs": {
+                    "host": {
+                        "workflow": {
+                            "id": "Pattern_ChildWorkflow"
+                        }
+                    },
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@triggerBody()"
+                },
+                "runAfter": {}
+            },
+            "Return_Child_Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Call_Child_Workflow')"
+                },
+                "runAfter": {
+                    "Call_Child_Workflow": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "description": "Child Workflow Call pattern - use Workflow action type to call another workflow in the same Logic App.",
+                "kind": "Http"
+            }
+        }
+    },
+    "kind": "Stateful"
+}

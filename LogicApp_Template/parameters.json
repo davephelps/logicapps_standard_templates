@@ -1,0 +1,54 @@
+{
+  "mapLookups": {
+    "type": "Array",
+    "value": [
+      {
+        "namespace": "http://EDITest.SourceCustomer",
+        "rootNode": "Customer",
+        "mapPath": "CustomerToClient.xslt",
+        "description": "Customer source to Client target mapping"
+      },
+      {
+        "namespace": "http://EDITest.SourceBuyer",
+        "rootNode": "Buyer",
+        "mapPath": "BuyerToPatron.xslt",
+        "description": "Buyer source to Patron target mapping"
+      }
+    ]
+  },
+  "countryConfigurations": {
+    "type": "Array",
+    "value": [
+      {
+        "countryCode": "UK",
+        "region": "Europe",
+        "currency": "GBP",
+        "taxRate": 0.2
+      },
+      {
+        "countryCode": "US",
+        "region": "NorthAmerica",
+        "currency": "USD",
+        "taxRate": 0
+      },
+      {
+        "countryCode": "DE",
+        "region": "Europe",
+        "currency": "EUR",
+        "taxRate": 0.19
+      }
+    ]
+  },
+  "maxRetryCount": {
+    "type": "Int",
+    "value": 3
+  },
+  "defaultPriority": {
+    "type": "String",
+    "value": "normal"
+  },
+  "enableDetailedLogging": {
+    "type": "Bool",
+    "value": true
+  }
+}

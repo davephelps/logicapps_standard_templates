@@ -1,0 +1,118 @@
+### HTTP Trigger Workflow Test
+POST http://localhost:7071/api/HTTP_Trigger_Workflow/triggers/When_a_HTTP_request_is_received
+Content-Type: application/json
+
+{
+  "orders": [
+    {
+      "orderId": "ORD-2025-090312345",
+      "orderDate": "2025-09-03T14:30:00Z",
+      "status": "PENDING",
+      "totalAmount": {
+        "value": 89.99,
+        "currency": "GBP"
+      },
+      "customer": {
+        "customerId": "CUST-789456",
+        "contactDetails": {
+          "firstName": "Sarah",
+          "lastName": "Johnson",
+          "email": "sarah.johnson@email.com",
+          "phone": "+44 7700 123456"
+        },
+        "addresses": {
+          "billing": {
+            "street": "123 High Street",
+            "city": "London",
+            "postalCode": "SW1A 1AA",
+            "country": "GB"
+          },
+          "delivery": {
+            "street": "456 Oxford Street",
+            "city": "London",
+            "postalCode": "W1C 1DX",
+            "country": "GB"
+          }
+        }
+      },
+      "orderDetails": {
+        "items": [
+          {
+            "lineNumber": 1,
+            "productCode": "PROD-001",
+            "productName": "Floral Summer Dress",
+            "size": "M",
+            "color": "Blue",
+            "quantity": 1,
+            "unitPrice": 89.99
+          }
+        ],
+        "shipping": {
+          "method": "STANDARD",
+          "carrier": "CONTOSO Shipping",
+          "estimatedDelivery": "2025-09-05"
+        }
+      },
+      "payment": {
+        "method": "CREDIT_CARD",
+        "status": "AUTHORIZED",
+        "transactionId": "TXN-2025090312345"
+      }
+    },
+    {
+      "orderId": "ORD-2025-090312346",
+      "orderDate": "2025-09-03T15:45:00Z",
+      "status": "CONFIRMED",
+      "totalAmount": {
+        "value": 149.98,
+        "currency": "GBP"
+      },
+      "customer": {
+        "customerId": "CUST-654321",
+        "contactDetails": {
+          "firstName": "James",
+          "lastName": "Smith",
+          "email": "james.smith@email.com",
+          "phone": "+44 7700 987654"
+        },
+        "addresses": {
+          "billing": {
+            "street": "789 King's Road",
+            "city": "Manchester",
+            "postalCode": "M1 2AB",
+            "country": "GB"
+          },
+          "delivery": {
+            "street": "789 King's Road",
+            "city": "Manchester",
+            "postalCode": "M1 2AB",
+            "country": "GB"
+          }
+        }
+      },
+      "orderDetails": {
+        "items": [
+          {
+            "lineNumber": 1,
+            "productCode": "PROD-002",
+            "productName": "Classic White Shirt",
+            "size": "L",
+            "color": "White",
+            "quantity": 2,
+            "unitPrice": 74.99
+          }
+        ],
+        "shipping": {
+          "method": "EXPRESS",
+          "carrier": "CONTOSO Express",
+          "estimatedDelivery": "2025-09-04"
+        }
+      },
+      "payment": {
+        "method": "PAYPAL",
+        "status": "COMPLETED",
+        "transactionId": "TXN-2025090312346"
+      }
+    }
+  ]
+}

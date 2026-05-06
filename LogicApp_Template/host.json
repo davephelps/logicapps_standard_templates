@@ -1,0 +1,24 @@
+{
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "SamplingPercentage" : 100,
+        "isEnabled": true,
+        "excludedTypes": "Request;Exception;Dependency"
+      }
+    }
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle.Workflows",
+    "version": "[1.*, 2.0.0)"
+  },
+  "extensions": {
+    "workflow": {
+      "Settings": {
+        "Runtime.ApplicationInsightTelemetryVersion": "v2",
+        "Runtime.ApplicationInsights.PreserveIncomingOperationId": "true"
+      }
+    }
+  }
+}
