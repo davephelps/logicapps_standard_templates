@@ -16,7 +16,7 @@ When generating a `workflow.json`, follow this order:
    variables, `Liquid`, `XsltTransform`, `Workflow`, `Function`, `Compose`, `ParseJson`, etc.
    Includes `runAfter`, `trackedProperties`, and `operationOptions` reference blocks.
 
-3. **Copy a pattern from [`patterns/`](./patterns/) when you need *shape*** — a workflow structure
+3. **Copy a sibling pattern folder from `LogicApp_Template/`** when you need *shape* — a workflow structure
    that JSON Schema can't express. Each pattern is one minimal `workflow.json`.
 
 ## Lookup files
@@ -45,30 +45,36 @@ The "AzureWebJobsStorage Unhealthy" warning from `func host` is benign — the m
 
 Each folder contains exactly one `workflow.json` that demonstrates a structure.
 
+Pattern folders live as siblings of this `_connectors/` folder, directly under `LogicApp_Template/`. Each is a deployable workflow folder (matching the Logic Apps Standard convention of one folder per workflow), so links from this README are relative paths up one level.
+
 | Pattern | What it shows |
 |---|---|
-| [`patterns/parallel`](./patterns/parallel/) | Parallel branches = multiple actions sharing the same `runAfter`. **There is no `Parallel` action type.** |
-| [`patterns/exception-handler`](./patterns/exception-handler/) | Try/catch via two sibling Scopes; catch uses `runAfter: { Try: [Failed, TimedOut, Skipped] }` |
-| [`patterns/child-workflow-caller`](./patterns/child-workflow-caller/) + [`patterns/child-workflow-callee`](./patterns/child-workflow-callee/) | Invoking a sibling workflow with the `Workflow` action |
-| [`patterns/http-oauth`](./patterns/http-oauth/) | `authentication.type: ActiveDirectoryOAuth` shape |
-| [`patterns/http-basic`](./patterns/http-basic/) | `authentication.type: Basic` |
-| [`patterns/http-bearer-token`](./patterns/http-bearer-token/) | `authentication.type: Raw` (`Bearer …`) |
-| [`patterns/http-cookie-auth`](./patterns/http-cookie-auth/) | Two-step login + cookie reuse |
-| [`patterns/http-retry-policy`](./patterns/http-retry-policy/) | `retryPolicy.type: exponential` with ISO8601 intervals |
-| [`patterns/http-no-retry`](./patterns/http-no-retry/) | `retryPolicy.type: none` |
-| [`patterns/xslt-static`](./patterns/xslt-static/) | `XsltTransform` with map name from `Artifacts/Maps` |
-| [`patterns/xslt-dynamic`](./patterns/xslt-dynamic/) | `XsltTransform` with map name resolved at runtime |
-| [`patterns/inline-csharp`](./patterns/inline-csharp/) | `CSharpCode` action calling the [`../CustomCode`](../CustomCode/) project |
-| [`patterns/invoke-function`](./patterns/invoke-function/) | `Function` action invoking a custom Azure Function |
-| [`patterns/tracked-properties`](./patterns/tracked-properties/) | Custom Application Insights properties on an action |
+| [`parallel`](../parallel/) | Parallel branches = multiple actions sharing the same `runAfter`. **There is no `Parallel` action type.** |
+| [`exception-handler`](../exception-handler/) | Try/catch via two sibling Scopes; catch uses `runAfter: { Try: [Failed, TimedOut, Skipped] }` |
+| [`condition-if-else`](../condition-if-else/) | `If` action with `expression.and[...]` (or `or[...]`) wrapper - the designer renders BLANK if a bare comparison is at the top level, even though the runtime accepts both forms |
+| [`switch-case`](../switch-case/) | `Switch` action with a SCALAR `expression` (not an and/or wrapper like `If`), one entry per matchable value under `cases`, plus a `default` branch |
+| [`validate-and-short-circuit`](../validate-and-short-circuit/) | Precondition check that aborts with a typed non-2xx `Response` by putting the happy path inside `else.actions` - NO synthetic exceptions, NO `Terminate`, NO `Force_Scope_Failure` hacks |
+| [`child-workflow-caller`](../child-workflow-caller/) + [`child-workflow-callee`](../child-workflow-callee/) | Invoking a sibling workflow with the `Workflow` action |
+| [`http-oauth`](../http-oauth/) | `authentication.type: ActiveDirectoryOAuth` shape |
+| [`http-basic`](../http-basic/) | `authentication.type: Basic` |
+| [`http-cookie-auth`](../http-cookie-auth/) | Two-step login + cookie reuse |
+| [`http-retry-policy`](../http-retry-policy/) | `retryPolicy.type: exponential` with ISO8601 intervals |
+| [`http-no-retry`](../http-no-retry/) | `retryPolicy.type: none` |
+| [`loop-collect`](../loop-collect/) | `Foreach` collecting per-iteration results for downstream aggregation |
+| [`xslt-static`](../xslt-static/) | `XsltTransform` with map name from `Artifacts/Maps` |
+| [`xslt-dynamic`](../xslt-dynamic/) | `XsltTransform` with map name resolved at runtime |
+| [`inline-csharp`](../inline-csharp/) | `CSharpCode` action calling the [`../../CustomCode`](../../CustomCode/) project |
+| [`invoke-function`](../invoke-function/) | `Function` action invoking a custom Azure Function |
+| [`tracked-properties`](../tracked-properties/) | Custom Application Insights properties on an action |
 
 ### Patterns to add (not yet present)
 
 These would be high-value additions when next regenerating examples:
 
-- `patterns/peek-lock-and-settle` — `peekLockQueueMessagesV2` trigger + `completeQueueMessageV2` / `abandonQueueMessageV2` / `deadLetterQueueMessageV2` (Service Bus settlement)
-- `patterns/variables-and-until` — `InitializeVariable` + `Until` loop with `expression` and `limit`
-- `patterns/foreach-serial` — `Foreach` with `runtimeConfiguration.concurrency.repetitions = 1`
+- `http-bearer-token` — `authentication.type: Raw` (`Bearer ...`) shape for vendors that issue static or pre-fetched bearer tokens
+- `peek-lock-and-settle` — `peekLockQueueMessagesV2` trigger + `completeQueueMessageV2` / `abandonQueueMessageV2` / `deadLetterQueueMessageV2` (Service Bus settlement)
+- `variables-and-until` — `InitializeVariable` + `Until` loop with `expression` and `limit`
+- `foreach-serial` — `Foreach` with `runtimeConfiguration.concurrency.repetitions = 1`
 
 ## Workspace layout
 
@@ -77,7 +83,16 @@ LogicApp_Template/
 ├── connectors.json                 # service-provider catalog (lookup)
 ├── builtins.json                   # built-in actions/triggers (lookup)
 ├── Generate-ConnectorCatalog.ps1   # regenerator for connectors.json
-├── patterns/                       # workflow.json shape examples
+├── parallel/                       # one folder per pattern (workflow.json shape examples)
+├── exception-handler/
+├── condition-if-else/
+├── switch-case/
+├── validate-and-short-circuit/
+├── child-workflow-caller/ + child-workflow-callee/
+├── http-{oauth,basic,cookie-auth,retry-policy,no-retry}/
+├── loop-collect/
+├── xslt-{static,dynamic}/
+├── inline-csharp/  invoke-function/  tracked-properties/
 ├── connections.json
 ├── host.json
 ├── parameters.json
@@ -95,5 +110,5 @@ LogicApp_Template/
 3. **Casing matters**: `serviceProviderId` casing is inconsistent across providers (`AzureBlob`, `azurequeues`, `azureTables`, `serviceBus`, `keyVault`, `eventHub`, `openai`, …). Always copy verbatim.
 4. **Service Bus settlement ops are V2-suffixed**: `completeQueueMessageV2`, `abandonQueueMessageV2`, `deadLetterQueueMessageV2`, `renewLockQueueMessageV2`, `deferQueueMessageV2`. Same pattern for topics. Non-V2 forms exist in old samples but should not be used in new workflows.
 5. **`runAfter` statuses** are exactly: `Succeeded`, `Failed`, `Skipped`, `TimedOut`. Case-sensitive.
-6. **Parallel = same `runAfter`**, not a wrapper action. See [`patterns/parallel`](./patterns/parallel/).
-7. **Try/catch = two sibling Scopes**, second with `runAfter: { TryScope: [Failed, TimedOut, Skipped] }`. See [`patterns/exception-handler`](./patterns/exception-handler/).
+6. **Parallel = same `runAfter`**, not a wrapper action. See [`parallel`](../parallel/).
+7. **Try/catch = two sibling Scopes**, second with `runAfter: { TryScope: [Failed, TimedOut, Skipped] }`. See [`exception-handler`](../exception-handler/).

@@ -1,0 +1,113 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Lookup_Existing_Versions": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "@appsetting('vendorSearchUrl')",
+                    "method": "GET",
+                    "queries": {
+                        "filename": "@triggerBody()?['filename']"
+                    }
+                },
+                "runAfter": {}
+            },
+            "Validate_Single_Match": {
+                "type": "If",
+                "expression": {
+                    "and": [
+                        {
+                            "greater": [
+                                "@length(body('Lookup_Existing_Versions')?['matches'])",
+                                1
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "Respond_Ambiguous": {
+                        "type": "Response",
+                        "kind": "Http",
+                        "inputs": {
+                            "statusCode": 500,
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": {
+                                "status": "failed",
+                                "error": {
+                                    "code": "AMBIGUOUS_MATCH",
+                                    "message": "Search returned more than one match - refusing to choose.",
+                                    "matchCount": "@length(body('Lookup_Existing_Versions')?['matches'])"
+                                }
+                            }
+                        }
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Build_Create_Body": {
+                            "type": "Compose",
+                            "inputs": {
+                                "filename": "@{triggerBody()?['filename']}",
+                                "originalFileId": "@if(equals(length(body('Lookup_Existing_Versions')?['matches']), 1), body('Lookup_Existing_Versions')?['matches'][0]?['id'], '')"
+                            }
+                        },
+                        "Create_Or_Update_Asset": {
+                            "type": "Http",
+                            "inputs": {
+                                "uri": "@appsetting('vendorAssetUrl')",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": "@outputs('Build_Create_Body')"
+                            },
+                            "runAfter": {
+                                "Build_Create_Body": [
+                                    "SUCCEEDED"
+                                ]
+                            }
+                        },
+                        "Respond_Success": {
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "status": "success",
+                                    "assetId": "@body('Create_Or_Update_Asset')?['id']"
+                                }
+                            },
+                            "runAfter": {
+                                "Create_Or_Update_Asset": [
+                                    "SUCCEEDED"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "runAfter": {
+                    "Lookup_Existing_Versions": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "description": "Validate-and-short-circuit pattern. A precondition check that wants to abort with a typed non-2xx Response - WITHOUT triggering an exception. ANTI-PATTERN to avoid: sending the 500 Response and then forcing a synthetic runtime error (e.g. @json('force-failure')) to abort the surrounding scope. That hack is unnecessary - put the downstream happy-path actions inside 'else.actions' and they CANNOT run when validation fails. The exception-handler pattern is for UNEXPECTED failures; this pattern is for DELIBERATE short-circuits."
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "ChildWorkflowTrigger": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Validate-and-short-circuit pattern - use If/Else to gate downstream actions on a precondition check. Failure branch sends a typed non-2xx Response; success branch contains the entire happy path. No Terminate, no synthetic exceptions, no Force_Scope_Failure hacks."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

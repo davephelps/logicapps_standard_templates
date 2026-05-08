@@ -1,0 +1,70 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Check_Country_Code": {
+                "type": "If",
+                "expression": {
+                    "and": [
+                        {
+                            "equals": [
+                                "@triggerBody()?['country']",
+                                "UK"
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "Process_UK_Order": {
+                        "type": "Compose",
+                        "inputs": {
+                            "region": "UK",
+                            "data": "@triggerBody()"
+                        }
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Process_International_Order": {
+                            "type": "Compose",
+                            "inputs": {
+                                "region": "International",
+                                "data": "@triggerBody()"
+                            }
+                        }
+                    }
+                },
+                "runAfter": {},
+                "description": "If/else condition. The 'expression' MUST be wrapped in an 'and' (or 'or') array even when there is only one comparison clause - the designer's condition editor renders BLANK if a bare comparison ({ \"greater\": [...] }) is at the top level. Runtime accepts both forms; designer only renders the wrapped form."
+            },
+            "Return_Result": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": {
+                        "processed": true
+                    }
+                },
+                "runAfter": {
+                    "Check_Country_Code": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Condition If/Else pattern - use If action with expression.and[...] (or expression.or[...]) wrapper containing one or more comparison clauses (equals, greater, less, contains, etc.)."
+            }
+        }
+    },
+    "kind": "Stateful"
+}

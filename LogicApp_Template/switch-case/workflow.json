@@ -1,0 +1,79 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Route_By_Order_Type": {
+                "type": "Switch",
+                "expression": "@triggerBody()?['orderType']",
+                "cases": {
+                    "Standard": {
+                        "case": "STANDARD",
+                        "actions": {
+                            "Handle_Standard": {
+                                "type": "Compose",
+                                "inputs": {
+                                    "route": "standard-fulfilment",
+                                    "order": "@triggerBody()"
+                                }
+                            }
+                        }
+                    },
+                    "Express": {
+                        "case": "EXPRESS",
+                        "actions": {
+                            "Handle_Express": {
+                                "type": "Compose",
+                                "inputs": {
+                                    "route": "express-fulfilment",
+                                    "order": "@triggerBody()"
+                                }
+                            }
+                        }
+                    },
+                    "Bulk": {
+                        "case": "BULK",
+                        "actions": {
+                            "Handle_Bulk": {
+                                "type": "Compose",
+                                "inputs": {
+                                    "route": "bulk-fulfilment",
+                                    "order": "@triggerBody()"
+                                }
+                            }
+                        }
+                    }
+                },
+                "default": {
+                    "actions": {
+                        "Reject_Unknown": {
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "UNKNOWN_ORDER_TYPE",
+                                    "received": "@triggerBody()?['orderType']"
+                                }
+                            }
+                        }
+                    }
+                },
+                "runAfter": {},
+                "description": "Switch on a single value. The 'expression' is a SCALAR expression (string/int) - NOT an and/or wrapper like If uses. Each case has a literal 'case' value to match. The 'default' branch runs when no case matches; always provide one."
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "description": "Switch/Case pattern - use Switch action with a scalar 'expression' and one entry per matchable value under 'cases'. Always provide a 'default' branch."
+            }
+        }
+    },
+    "kind": "Stateful"
+}
