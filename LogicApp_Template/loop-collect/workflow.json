@@ -110,35 +110,16 @@
                     "Lookup_Each_Order_Account": [ "SUCCEEDED" ]
                 }
             },
-            "Project_Successes": {
+            "Project_Combined_Results": {
                 "type": "Select",
-                "description": "Project the per-iteration success Compose outputs.",
+                "description": "Concatenate success and failure iteration wrappers, then strip down to the inner Compose outputs (the business payload).",
                 "inputs": {
-                    "from": "@body('Filter_Successes')",
+                    "from": "@union(body('Filter_Successes'), body('Filter_Failures'))",
                     "select": "@item()['outputs']"
                 },
                 "runAfter": {
-                    "Filter_Successes": [ "SUCCEEDED" ]
-                }
-            },
-            "Project_Failures": {
-                "type": "Select",
-                "description": "Project the per-iteration failure Compose outputs.",
-                "inputs": {
-                    "from": "@body('Filter_Failures')",
-                    "select": "@item()['outputs']"
-                },
-                "runAfter": {
+                    "Filter_Successes": [ "SUCCEEDED" ],
                     "Filter_Failures": [ "SUCCEEDED" ]
-                }
-            },
-            "Combine_Results": {
-                "type": "Compose",
-                "description": "Concatenate per-iteration success and failure outputs into a single array.",
-                "inputs": "@union(body('Project_Successes'), body('Project_Failures'))",
-                "runAfter": {
-                    "Project_Successes": [ "SUCCEEDED" ],
-                    "Project_Failures": [ "SUCCEEDED" ]
                 }
             },
             "Return_Account_Details": {
@@ -150,12 +131,13 @@
                         "Content-Type": "application/json"
                     },
                     "body": {
-                        "totalCount": "@length(outputs('Combine_Results'))",
-                        "accounts": "@outputs('Combine_Results')"
+                        "totalCount": "@length(body('Project_Combined_Results'))",
+                        "success": "@equals(length(body('Filter_Failures')), 0)",
+                        "accounts": "@body('Project_Combined_Results')"
                     }
                 },
                 "runAfter": {
-                    "Combine_Results": [ "SUCCEEDED" ]
+                    "Project_Combined_Results": [ "SUCCEEDED" ]
                 }
             }
         },
