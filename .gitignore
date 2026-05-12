@@ -1,0 +1,15 @@
+# .NET build outputs
+bin/
+obj/
+
+# Local VS Code workspace settings (only the repo root one -- CustomCode/.vscode/ is intentionally tracked)
+/.vscode/
+
+# Logic Apps Standard local-only artefacts
+local.settings.json
+local.settings.dev.json
+workflow-designtime/
+.debug/
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
