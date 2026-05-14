@@ -1,0 +1,19 @@
+# Build output
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+
+# VS / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Logic Apps local artifacts
+local.settings.json
+local.settings.dev.json
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+.debug/
