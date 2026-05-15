@@ -1,7 +1,7 @@
 {
   "bundleVersion": "1.161.25",
   "generatedUtc": "2026-05-06T12:51:40.4099951Z",
-  "$comment": "Bundle-added built-in operations exposed under /connectionProviders/*. Each operation's 'operationType' field is the canonical 'type' string for workflow.json. Workflow-engine primitives (Http, If, Switch, Foreach, Compose, ParseJson, Scope, etc.) are NOT here — see builtins.json.",
+  "$comment": "Bundle-added built-in operations exposed under /connectionProviders/*. Each operation's 'operationType' field is the canonical 'type' string for workflow.json. Workflow-engine primitives (Http, If, Switch, Foreach, Compose, ParseJson, Scope, etc.) are NOT here -- see builtins-schema.json.",
   "connectionProviders": {
     "dataOperationNew": {
       "connectionProviderId": "connectionProviders/dataOperationNew",
