@@ -41,6 +41,50 @@ cd ..
 
 The "AzureWebJobsStorage Unhealthy" warning from `func host` is benign — the management API still serves operation manifests.
 
+## Validating generated workflows
+
+[`Validate-Workflows.ps1`](./Validate-Workflows.ps1) is the mechanical gate that enforces the rules in this README against a user-generated Logic App folder.
+
+```powershell
+# From the LogicApp folder you generated
+.\_connectors\Validate-Workflows.ps1 -Path .
+
+# With reference resolution against local.settings.json and parameters.json
+.\_connectors\Validate-Workflows.ps1 -Path . -CheckAppSettings -CheckParameters -Strict
+```
+
+Sibling of [`Validate-Catalogs.ps1`](./Validate-Catalogs.ps1): that script validates the **shipped patterns** against the catalogs; this script validates **user-generated workflows** against the catalogs.
+
+### Tiers of checks
+
+All tiers run by default; warnings only fail the run under `-Strict`.
+
+| Tier | What it catches |
+|---|---|
+| **T1 Type-in-catalog** | Every action/trigger `type` exists in `builtins-runtime` ∪ `builtins-schema` ∪ `{ServiceProviderConnection, ServiceProvider, ApiConnection}`. Banned hallucinations (`Parallel`, `TryCatch`, `Sleep`, `Loop`, `Variable`, `CSharpCode`, `XsltTransform`) are flagged with a suggested replacement. |
+| **T2 ServiceProvider deep** | `(serviceProviderId, operationId)` exists in `connectors.json` (case-sensitive); all `required` params present; param keys are a subset of the catalog; `connectionName` resolves to a `connections.json` entry whose `serviceProvider.id` matches. The well-known `(Sftp, createFile)` mistake gets a specific hint recommending `uploadFileContent`. |
+| **T2b ApiConnection** | Structural shape only (no managed-API op-level catalog ships here): `inputs.host.connection.referenceName`, `inputs.method`, `inputs.path`; cross-references `referenceName` against `connections.json` → `managedApiConnections`. |
+| **T3 Engine-primitive shape** | Per-type required-key checks for `Http`, `If`, `Switch`, `Foreach`, `Until`, `Scope`, `InitializeVariable` (type whitelist), `SetVariable`/`Increment`/`Decrement`/`AppendToArrayVariable`/`AppendToStringVariable`, `Compose`, `ParseJson` (content + schema), `Response`, `Wait`, `Terminate` (runStatus whitelist), `Workflow` (child), `Function`, `Liquid`, `Xslt`. |
+| **T4 Cross-action** | `runAfter` keys reference real sibling actions in the same container; statuses ∈ `{Succeeded, Failed, Skipped, TimedOut}` (any case). |
+| **T5 Expression discipline** | Three rules: (1) `json(concat(...string(...)))` anti-pattern, (2) action types called as inline functions inside `@expressions` (`select`, `query`, `compose`, `parseJson`, `terminate`, `xslt`), (3) `If`/`Until` expression with a bare comparator not wrapped in `and`/`or`/`not`. |
+| **T6 Reference resolution** (opt-in) | Every `@appsetting('X')` has a key in `local.settings.json`; every `@parameters('Y')` has an entry in `parameters.json`. Enable via `-CheckAppSettings -CheckParameters`. |
+
+### Action-type coverage matrix
+
+| Action | T1 catalog | Deep shape |
+|---|---|---|
+| `Http`, `If`, `Switch`, `Foreach`, `Until`, `Scope`, `InitializeVariable`, `SetVariable`, `IncrementVariable`, `DecrementVariable`, `AppendToArrayVariable`, `AppendToStringVariable`, `Compose`, `ParseJson`, `Response`, `Wait`, `Terminate`, `Workflow`, `Function`, `Liquid`, `Xslt` | ✅ | ✅ T3 |
+| `ServiceProvider`, `ServiceProviderConnection` | ✅ | ✅ T2 (op-level catalog) |
+| `ApiConnection` | ✅ | 🟡 T2b (structural only — no managed-API catalog) |
+| `Select`, `Query`, `Table`, `JavaScriptCode`, `CSharpScriptCode`, `FlatFileEncoding`, `FlatFileDecoding`, `XmlValidation`, `ApiConnectionWebhook`, `HttpWebhook` | ✅ | T1 + T4 + T5 only |
+
+All actions, regardless of category, still get T1 (catalog + banned-hallucination gate), T4 (runAfter), T5 (expression discipline), and T6 (opt-in reference resolution).
+
+### Exit codes
+
+- `0` — pass (warnings allowed unless `-Strict`)
+- `1` — at least one failure, or any warning under `-Strict`
+
 ## Patterns (shape, not strings)
 
 Each folder contains exactly one `workflow.json` that demonstrates a structure.

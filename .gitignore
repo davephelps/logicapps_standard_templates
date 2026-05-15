@@ -2,6 +2,9 @@
 bin/
 obj/
 
+# Logic Apps designer cache
+*.lscache
+
 # Local VS Code workspace settings (only the repo root one -- CustomCode/.vscode/ is intentionally tracked)
 /.vscode/
 
