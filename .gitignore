@@ -9,6 +9,9 @@ Release/
 *.user
 *.suo
 
+# Logic Apps designer cache
+*.lscache
+
 # VS Code -- only the repo-root .vscode/ is ignored; CustomCode/.vscode/ is intentionally tracked
 /.vscode/
 
