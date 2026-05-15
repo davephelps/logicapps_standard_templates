@@ -11,10 +11,10 @@
   ],
   "settings": {
     "terminal.integrated.env.windows": {
-      "PATH": "C:\\Users\\daphelps\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
+      "PATH": "C:\\Users\\${env:USERNAME}\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
     },
     "omnisharp.dotNetCliPaths": [
-      "C:\\Users\\daphelps\\.azurelogicapps\\dependencies\\DotNetSDK"
+      "C:\\Users\\${env:USERNAME}\\.azurelogicapps\\dependencies\\DotNetSDK"
     ],
     "files.exclude": {
       "**/.git": true,

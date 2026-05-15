@@ -1,19 +1,21 @@
-# Build output
-**/bin/
-**/obj/
-**/Debug/
-**/Release/
+# .NET build outputs
+bin/
+obj/
+Debug/
+Release/
 
-# VS / VS Code
+# Visual Studio
 .vs/
-.vscode/
 *.user
 *.suo
 
-# Logic Apps local artifacts
+# VS Code -- only the repo-root .vscode/ is ignored; CustomCode/.vscode/ is intentionally tracked
+/.vscode/
+
+# Logic Apps Standard local-only artefacts
 local.settings.json
 local.settings.dev.json
+.debug/
 __blobstorage__/
 __queuestorage__/
 __azurite_db*__.json
-.debug/
