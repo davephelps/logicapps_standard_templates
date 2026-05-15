@@ -39,6 +39,19 @@
         "id": "/serviceProviders/azurequeues"
       },
       "displayName": "AzureQueues_Connection"
+    },
+    "sftp": {
+      "parameterValues": {
+        "hostName":   "@appsetting('sftp_hostName')",
+        "portNumber": "@appsetting('sftp_portNumber')",
+        "userName":   "@appsetting('sftp_userName')",
+        "password":   "@appsetting('sftp_password')"
+      },
+      "parameterSetName": "usernamePassword",
+      "serviceProvider": {
+        "id": "/serviceProviders/Sftp"
+      },
+      "displayName": "Sftp_Connection"
     }
   },
   "managedApiConnections": {}
