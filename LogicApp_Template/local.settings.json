@@ -11,7 +11,7 @@
     "AzureBlob_connectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
     "azureTables_connectionString": "YOUR_TABLE_STORAGE_CONNECTION_STRING",
     "azurequeues_connectionString": "YOUR_QUEUE_STORAGE_CONNECTION_STRING",
-    
+     
     "externalApiUrl": "https://api.example.com/endpoint",
     "externalServiceUrl": "https://service.example.com/api",
     "orderServiceUrl": "https://orders.example.com/api",
