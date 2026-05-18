@@ -16,7 +16,6 @@ Release/
 /.vscode/
 
 # Logic Apps Standard local-only artefacts
-local.settings.json
 local.settings.dev.json
 .debug/
 __blobstorage__/

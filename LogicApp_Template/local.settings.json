@@ -1,0 +1,40 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_INPROC_NET8_ENABLED": "1",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "APP_KIND": "workflowapp",
+    "WORKFLOWS_SUBSCRIPTION_ID": "",
+    
+    "serviceBus_connectionString": "YOUR_SERVICE_BUS_CONNECTION_STRING",
+    "AzureBlob_connectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
+    "azureTables_connectionString": "YOUR_TABLE_STORAGE_CONNECTION_STRING",
+    "azurequeues_connectionString": "YOUR_QUEUE_STORAGE_CONNECTION_STRING",
+    
+    "externalApiUrl": "https://api.example.com/endpoint",
+    "externalServiceUrl": "https://service.example.com/api",
+    "orderServiceUrl": "https://orders.example.com/api",
+    "serviceAUrl": "https://service-a.example.com/api",
+    "serviceBUrl": "https://service-b.example.com/api",
+    "serviceCUrl": "https://service-c.example.com/api",
+    "securedApiUrl": "https://secure.example.com/api",
+    "protectedApiUrl": "https://protected.example.com/api",
+    "loginUrl": "https://auth.example.com/login",
+    "tokenEndpoint": "https://auth.example.com/oauth/token",
+    
+    "aadTenantId": "YOUR_AAD_TENANT_ID",
+    "aadAudience": "YOUR_AAD_AUDIENCE",
+    "aadClientId": "YOUR_AAD_CLIENT_ID",
+    "aadClientSecret": "YOUR_AAD_CLIENT_SECRET",
+    
+    "clientId": "YOUR_CLIENT_ID",
+    "clientSecret": "YOUR_CLIENT_SECRET",
+    "tokenScope": "YOUR_TOKEN_SCOPE",
+    
+    "apiUsername": "YOUR_API_USERNAME",
+    "apiPassword": "YOUR_API_PASSWORD",
+    
+    "environment": "development"
+  }
+}
