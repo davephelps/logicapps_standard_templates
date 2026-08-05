@@ -30,3 +30,6 @@ __azurite_db*__.json
 TestResults/
 testrun.log
 
+
+# Reqnroll-generated test code (regenerated during build)
+*.feature.cs

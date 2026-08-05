@@ -15,6 +15,25 @@ namespace LogicApp.Tests.Integration.Infrastructure;
 /// </summary>
 public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
 {
+    /// <summary>
+    /// Images are pinned to tested defaults so runs stay repeatable; override with the
+    /// SERVICEBUS_EMULATOR_IMAGE / SQL_EDGE_IMAGE environment variables in CI/dev.
+    /// </summary>
+    private const string DefaultServiceBusEmulatorImage =
+        "mcr.microsoft.com/azure-messaging/servicebus-emulator:1.1.2";
+
+    private const string DefaultSqlEdgeImage = "mcr.microsoft.com/azure-sql-edge:1.0.7";
+
+    private static string ServiceBusEmulatorImage =>
+        Environment.GetEnvironmentVariable("SERVICEBUS_EMULATOR_IMAGE") is { Length: > 0 } image
+            ? image
+            : DefaultServiceBusEmulatorImage;
+
+    private static string SqlEdgeImage =>
+        Environment.GetEnvironmentVariable("SQL_EDGE_IMAGE") is { Length: > 0 } image
+            ? image
+            : DefaultSqlEdgeImage;
+
     private INetwork? _network;
     private IContainer? _sqlEdge;
     private IContainer? _sbEmulator;
@@ -42,7 +61,7 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
         const string sqlPwd = "Pwd-12345-StrongEnough!";
 
         _sqlEdge = new ContainerBuilder()
-            .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
+            .WithImage(SqlEdgeImage)
             .WithNetwork(_network)
             .WithNetworkAliases("sqledge")
             .WithEnvironment("ACCEPT_EULA", "Y")
@@ -51,7 +70,7 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
         await _sqlEdge.StartAsync();
 
         _sbEmulator = new ContainerBuilder()
-            .WithImage("mcr.microsoft.com/azure-messaging/servicebus-emulator:latest")
+            .WithImage(ServiceBusEmulatorImage)
             .WithNetwork(_network)
             .WithPortBinding(5672, true)
             .WithEnvironment("ACCEPT_EULA", "Y")

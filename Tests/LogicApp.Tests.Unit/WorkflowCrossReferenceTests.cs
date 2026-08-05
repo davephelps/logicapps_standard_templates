@@ -28,7 +28,7 @@ namespace LogicApp.Tests.Unit
             {
                 var def = WorkflowFiles.LoadDefinition(wf);
                 var refs = def.AllStrings()
-                    .SelectMany(s => paramRegex.Matches(s).Select(m => m.Groups[1].Value))
+                    .SelectMany(s => paramRegex.Matches(s).Cast<Match>().Select(m => m.Groups[1].Value))
                     .Distinct();
                 foreach (var name in refs)
                     Assert.IsTrue(declared.Contains(name),

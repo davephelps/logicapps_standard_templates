@@ -9,6 +9,17 @@ namespace LogicApp.Tests.E2E.Infrastructure;
 /// </summary>
 public sealed class AzuriteFixture : IAsyncDisposable
 {
+    /// <summary>
+    /// Image is pinned to a tested default so runs stay repeatable; override with the
+    /// AZURITE_IMAGE environment variable in CI/dev when a different tag is needed.
+    /// </summary>
+    private const string DefaultAzuriteImage = "mcr.microsoft.com/azure-storage/azurite:3.33.0";
+
+    private static string AzuriteImage =>
+        Environment.GetEnvironmentVariable("AZURITE_IMAGE") is { Length: > 0 } image
+            ? image
+            : DefaultAzuriteImage;
+
     private IContainer? _container;
     public string ConnectionString { get; private set; } = string.Empty;
 
@@ -22,7 +33,7 @@ public sealed class AzuriteFixture : IAsyncDisposable
         }
 
         _container = new ContainerBuilder()
-            .WithImage("mcr.microsoft.com/azure-storage/azurite:latest")
+            .WithImage(AzuriteImage)
             .WithPortBinding(10000, true)
             .WithPortBinding(10001, true)
             .WithPortBinding(10002, true)

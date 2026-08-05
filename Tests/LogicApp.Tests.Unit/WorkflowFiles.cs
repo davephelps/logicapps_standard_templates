@@ -18,23 +18,27 @@ namespace LogicApp.Tests.Unit
 
         public static string LogicAppRoot => _logicAppRoot.Value;
 
-        public static JsonDocument LoadWorkflow(string workflowName)
-        {
-            var path = Path.Combine(LogicAppRoot, workflowName, "workflow.json");
-            return JsonDocument.Parse(File.ReadAllText(path));
-        }
+        public static JsonElement LoadWorkflow(string workflowName) =>
+            ParseFile(Path.Combine(LogicAppRoot, workflowName, "workflow.json"));
 
         public static JsonElement LoadDefinition(string workflowName)
         {
-            var doc = LoadWorkflow(workflowName);
+            var path = Path.Combine(LogicAppRoot, workflowName, "workflow.json");
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
             return doc.RootElement.GetProperty("definition").Clone();
         }
 
         public static JsonElement LoadParameters() =>
-            JsonDocument.Parse(File.ReadAllText(Path.Combine(LogicAppRoot, "parameters.json"))).RootElement.Clone();
+            ParseFile(Path.Combine(LogicAppRoot, "parameters.json"));
 
         public static JsonElement LoadConnections() =>
-            JsonDocument.Parse(File.ReadAllText(Path.Combine(LogicAppRoot, "connections.json"))).RootElement.Clone();
+            ParseFile(Path.Combine(LogicAppRoot, "connections.json"));
+
+        private static JsonElement ParseFile(string path)
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
+            return doc.RootElement.Clone();
+        }
 
         private static string FindLogicAppRoot()
         {

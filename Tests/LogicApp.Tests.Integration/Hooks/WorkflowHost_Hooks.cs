@@ -1,16 +1,17 @@
 // WorkflowHost_Hooks -- Reqnroll lifecycle for the Logic App Standard host
 // and the in-process WireMock + Service Bus stubs.
 //
-// The Logic Apps Standard host (`func host start`) is expected to be started OUTSIDE
-// this process (CI step or developer terminal) before running the test suite. These
-// hooks therefore:
+// The Logic Apps Standard host (`func host start`) and the emulator stack (Azurite,
+// Service Bus emulator, WireMock) are started inside this test process by
+// Infrastructure/TestRunHooks and are test-run scoped. These hooks therefore only deal
+// with per-scenario concerns:
 //
 //   - register a TestEnvironment in the Reqnroll DI container so step definitions can
 //     resolve it via constructor injection (one instance per scenario);
-//   - start a fresh WireMock server before each scenario;
-//   - load the static __mocks/ stub files into WireMock;
+//   - ensure the test-run scoped WireMock server is running and load the static __mocks/
+//     stub files into it before each scenario;
 //   - purge the sample Service Bus queue before each scenario when the connection is configured;
-//   - reset WireMock stubs after each scenario.
+//   - reset WireMock stubs after each scenario (the server itself is not disposed here).
 
 using Reqnroll;
 using Reqnroll.BoDi;
