@@ -1,0 +1,8 @@
+{
+  "orderId": "sample-1",
+  "customer": "Contoso",
+  "lines": [
+    { "sku": "ABC-123", "qty": 2 },
+    { "sku": "XYZ-789", "qty": 1 }
+  ]
+}

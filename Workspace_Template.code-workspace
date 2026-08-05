@@ -1,15 +1,32 @@
 {
   "folders": [
     {
+      "name": "Solution",
+      "path": "."
+    },
+    {
       "name": "LogicApp_Template",
       "path": "./LogicApp_Template"
     },
     {
       "name": "CustomCode",
       "path": "./CustomCode"
+    },
+    {
+      "name": "Tests-Unit",
+      "path": "./Tests/LogicApp.Tests.Unit"
+    },
+    {
+      "name": "Tests-Integration",
+      "path": "./Tests/LogicApp.Tests.Integration"
+    },
+    {
+      "name": "Tests-E2E",
+      "path": "./E2E/LogicApp.Tests.E2E"
     }
   ],
   "settings": {
+    "dotnet.defaultSolution": "logicapps_standard_templates.sln",
     "terminal.integrated.env.windows": {
       "PATH": "C:\\Users\\${env:USERNAME}\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
     },
