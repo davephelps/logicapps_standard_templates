@@ -42,7 +42,7 @@
                         "type": "Query",
                         "inputs": {
                             "from": "@result('Business_Logic')",
-                            "where": "@equals(item()?.status,'Failed')"
+                            "where": "@or(equals(item()?.status,'Failed'), equals(item()?.status,'TimedOut'))"
                         }
                     },
                     "Error_Response": {
@@ -75,7 +75,8 @@
                 },
                 "runAfter": {
                     "Business_Logic": [
-                        "FAILED"
+                        "FAILED",
+                        "TIMEDOUT"
                     ]
                 },
                 "description": "Exception handler scope - runs only when Business_Logic fails. Filters errors, extracts details, and terminates with error info."
