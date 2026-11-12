@@ -1,350 +1,97 @@
 {
-  "bundleVersion": "1.161.25",
-  "generatedUtc": "2026-05-06T12:51:40.4099951Z",
+  "bundleVersion": "1.194.31",
+  "generatedUtc": "2026-11-12T10:52:05.3316746Z",
   "$comment": "Bundle-added built-in operations exposed under /connectionProviders/*. Each operation's 'operationType' field is the canonical 'type' string for workflow.json. Workflow-engine primitives (Http, If, Switch, Foreach, Compose, ParseJson, Scope, etc.) are NOT here -- see builtins-schema.json.",
   "connectionProviders": {
-    "dataOperationNew": {
-      "connectionProviderId": "connectionProviders/dataOperationNew",
+    "aiOperations": {
+      "connectionProviderId": "/connectionProviders/aiOperations",
       "actions": {
-        "composeNew": {
-          "summary": "Compose",
-          "operationType": "Compose",
-          "parameters": [],
-          "required": []
-        }
-      },
-      "triggers": {}
-    },
-    "localWorkflowOperation": {
-      "connectionProviderId": "connectionProviders/localWorkflowOperation",
-      "actions": {
-        "invokeWorkflow": {
-          "summary": "Call workflow in this logic app",
-          "operationType": "Workflow",
+        "parsedocument": {
+          "summary": "Parse a document",
+          "operationType": "ParseDocument",
           "parameters": [
             {
-              "name": "host",
-              "type": "object"
-            },
-            {
-              "name": "body",
-              "description": "The trigger body"
-            },
-            {
-              "name": "headers",
-              "description": "The trigger headers."
+              "name": "content",
+              "description": "The document content to parse."
             }
           ],
           "required": [
-            "host"
+            "content"
           ]
         },
-        "invokeNestedAgent": {
-          "summary": "Send a task to a nested agent",
-          "operationType": "NestedAgent",
+        "chunktext": {
+          "summary": "Chunk text",
+          "operationType": "ChunkText",
           "parameters": [
             {
-              "name": "host",
-              "type": "object"
-            },
-            {
-              "name": "body",
-              "type": "object"
-            }
-          ],
-          "required": [
-            "host",
-            "body"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "xmlOperations": {
-      "connectionProviderId": "connectionProviders/xmlOperations",
-      "actions": {
-        "xmlTransform": {
-          "summary": "Transform XML",
-          "operationType": "Xslt",
-          "parameters": [
-            {
-              "name": "content",
-              "type": "string",
-              "description": "Content"
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "xsltParameters",
-              "type": "object",
-              "description": "XSLT Parameters."
-            },
-            {
-              "name": "xmlExtensionObject",
-              "description": "XML Extension Object."
-            },
-            {
-              "name": "transformOptions",
-              "type": "string",
-              "description": "Transform options."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        },
-        "xmlValidation": {
-          "summary": "Validate XML",
-          "operationType": "XmlValidation",
-          "parameters": [
-            {
-              "name": "content",
-              "type": "string",
-              "description": "The content to validate."
-            },
-            {
-              "name": "schema",
-              "type": "object"
-            }
-          ],
-          "required": [
-            "content",
-            "schema"
-          ]
-        },
-        "XmlCompose": {
-          "summary": "Compose XML with schema",
-          "operationType": "XmlCompose",
-          "parameters": [
-            {
-              "name": "schema",
-              "type": "object"
-            },
-            {
-              "name": "rootNodeQualifiedName",
-              "type": "string",
-              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
-            },
-            {
-              "name": "dateTimeFormat",
-              "type": "string",
-              "description": "The date and time format specifier, for example, 'dddd, MMM dd yyyy HH:mm:ss zzz'."
-            },
-            {
-              "name": "content",
-              "type": "object",
-              "description": "The XML compose input parameters."
-            },
-            {
-              "name": "xmlWriterSettings",
-              "type": "object",
-              "description": "The settings to control XML serialization behavior."
-            }
-          ],
-          "required": [
-            "content",
-            "schema"
-          ]
-        },
-        "XmlParse": {
-          "summary": "Parse XML with schema",
-          "operationType": "XmlParse",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The XML content to parse."
-            },
-            {
-              "name": "schema",
-              "type": "object"
-            },
-            {
-              "name": "xmlReaderSettings",
-              "type": "object"
-            },
-            {
-              "name": "jsonWriterSettings",
-              "type": "object"
-            },
-            {
-              "name": "rootNodeQualifiedName",
-              "type": "string",
-              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
-            }
-          ],
-          "required": [
-            "content",
-            "schema"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "dataMapperOperations": {
-      "connectionProviderId": "connectionProviders/dataMapperOperations",
-      "actions": {
-        "xsltTransform": {
-          "summary": "Transform using Data Mapper XSLT",
-          "operationType": "Xslt",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "Content"
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "transformedContentSchema",
-              "type": "object",
-              "description": "The transformed content schema."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "liquidOperations": {
-      "connectionProviderId": "connectionProviders/liquidOperations",
-      "actions": {
-        "liquidJsonToJson": {
-          "summary": "Transform JSON to JSON",
-          "operationType": "Liquid",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The content."
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "transformedContentSchema",
-              "type": "object",
-              "description": "The transformed content schema."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        },
-        "liquidJsonToText": {
-          "summary": "Transform JSON to text",
-          "operationType": "Liquid",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The content."
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "transformedContentSchema",
-              "type": "object",
-              "description": "The transformed content schema."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        },
-        "liquidXmlToJson": {
-          "summary": "Transform XML to JSON",
-          "operationType": "Liquid",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The content."
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "transformedContentSchema",
-              "type": "object",
-              "description": "The transformed content schema."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        },
-        "liquidXmlToText": {
-          "summary": "Transform XML to text",
-          "operationType": "Liquid",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The content."
-            },
-            {
-              "name": "map",
-              "type": "object"
-            },
-            {
-              "name": "transformedContentSchema",
-              "type": "object",
-              "description": "The transformed content schema."
-            }
-          ],
-          "required": [
-            "content",
-            "map"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "azureFunctionOperation": {
-      "connectionProviderId": "/connectionProviders/azureFunctionOperation",
-      "actions": {
-        "azureFunction": {
-          "summary": "Call an Azure function",
-          "operationType": "Function",
-          "parameters": [
-            {
-              "name": "method",
+              "name": "chunkingStrategy",
               "type": "string",
               "enum": [
-                "GET",
-                "PUT",
-                "POST",
-                "PATCH",
-                "DELETE"
+                "TokenSize"
               ],
-              "description": "Method"
+              "description": "The chunking strategy to use."
             },
             {
-              "name": "body",
-              "description": "The context object to pass to the function: { .. }"
-            },
-            {
-              "name": "headers",
-              "type": "object",
-              "description": "The request headers"
-            },
-            {
-              "name": "queries",
-              "type": "object"
+              "name": "text",
+              "description": "The text to chunk."
             }
           ],
           "required": [
-            "method"
+            "text",
+            "chunkingStrategy"
+          ]
+        },
+        "parsedocumentwithmetadata": {
+          "summary": "Parse document with metadata",
+          "operationType": "ParseDocumentWithMetadata",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The document content to parse."
+            },
+            {
+              "name": "fileType",
+              "type": "string",
+              "enum": [
+                "PDF",
+                "DOCX",
+                "XLSX",
+                "PPTX",
+                "TXT",
+                "MD",
+                "HTML"
+              ],
+              "description": "The document's file type."
+            }
+          ],
+          "required": [
+            "content",
+            "fileType"
+          ]
+        },
+        "chunktextwithmetadata": {
+          "summary": "Chunk text with metadata",
+          "operationType": "ChunkTextWithMetadata",
+          "parameters": [
+            {
+              "name": "tokenSize",
+              "type": "integer",
+              "description": "The token size to use."
+            },
+            {
+              "name": "chunkOverlapLength",
+              "type": "integer",
+              "description": "The chunk overlap length to use."
+            },
+            {
+              "name": "pageText",
+              "description": "The page text to chunk."
+            }
+          ],
+          "required": [
+            "tokenSize",
+            "chunkOverlapLength",
+            "pageText"
           ]
         }
       },
@@ -373,114 +120,8 @@
       },
       "triggers": {}
     },
-    "inlineCode": {
-      "connectionProviderId": "connectionProviders/inlineCode",
-      "actions": {
-        "javaScriptCode": {
-          "summary": "Execute JavaScript code",
-          "operationType": "JavaScriptCode",
-          "parameters": [
-            {
-              "name": "code",
-              "description": "The JavaScript code to execute."
-            },
-            {
-              "name": "explicitDependencies",
-              "type": "object"
-            }
-          ],
-          "required": [
-            "code"
-          ]
-        },
-        "cSharpScriptCode": {
-          "summary": "Execute C# script code",
-          "operationType": "CSharpScriptCode",
-          "parameters": [
-            {
-              "name": "CodeFile",
-              "description": "The C# script to execute"
-            }
-          ],
-          "required": [
-            "CodeFile"
-          ]
-        },
-        "powershellCode": {
-          "summary": "Execute PowerShell script code",
-          "operationType": "PowershellCode",
-          "parameters": [
-            {
-              "name": "CodeFile",
-              "description": "The PowerShell script to execute."
-            }
-          ],
-          "required": [
-            "CodeFile"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "flatFileOperations": {
-      "connectionProviderId": "connectionProviders/flatFileOperations",
-      "actions": {
-        "flatFileDecoding": {
-          "summary": "Decode flat file",
-          "operationType": "FlatFileDecoding",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The flat file content to decode."
-            },
-            {
-              "name": "schema",
-              "type": "object"
-            }
-          ],
-          "required": [
-            "content",
-            "schema"
-          ]
-        },
-        "flatFileEncoding": {
-          "summary": "Encode flat file",
-          "operationType": "FlatFileEncoding",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The XML content to encode."
-            },
-            {
-              "name": "schema",
-              "type": "object"
-            },
-            {
-              "name": "emptyNodeGenerationMode",
-              "type": "string",
-              "enum": [
-                "ForcedDisabled",
-                "HonorSchemaNodeProperty",
-                "ForcedEnabled"
-              ],
-              "description": "The mode of empty node generation for flat file encoding."
-            },
-            {
-              "name": "xmlNormalization",
-              "type": "boolean",
-              "description": "The setting to enable or disable XML normalization for flat file encoding."
-            }
-          ],
-          "required": [
-            "content",
-            "schema"
-          ]
-        }
-      },
-      "triggers": {}
-    },
     "as2Operations": {
-      "connectionProviderId": "connectionProviders/as2Operations",
+      "connectionProviderId": "/connectionProviders/as2Operations",
       "actions": {
         "as2Encode": {
           "summary": "Encode AS2",
@@ -548,86 +189,41 @@
       },
       "triggers": {}
     },
-    "swiftOperations": {
-      "connectionProviderId": "connectionProviders/swiftOperations",
+    "azureFunctionOperation": {
+      "connectionProviderId": "/connectionProviders/azureFunctionOperation",
       "actions": {
-        "SwiftMTEncode": {
-          "summary": "Encode SWIFT MT",
-          "operationType": "SwiftMTEncode",
+        "azureFunction": {
+          "summary": "Call an Azure function",
+          "operationType": "Function",
           "parameters": [
             {
-              "name": "messageToEncode",
-              "description": "The SWIFT message to encode."
-            },
-            {
-              "name": "messageValidation",
+              "name": "method",
               "type": "string",
               "enum": [
-                "Enable",
-                "Disable"
+                "GET",
+                "PUT",
+                "POST",
+                "PATCH",
+                "DELETE"
               ],
-              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate."
+              "description": "Method"
+            },
+            {
+              "name": "body",
+              "description": "The context object to pass to the function: { .. }"
+            },
+            {
+              "name": "headers",
+              "type": "object",
+              "description": "The request headers"
+            },
+            {
+              "name": "queries",
+              "type": "object"
             }
           ],
           "required": [
-            "messageToEncode",
-            "messageValidation"
-          ]
-        },
-        "SwiftMTDecode": {
-          "summary": "Decode SWIFT MT",
-          "operationType": "SwiftMTDecode",
-          "parameters": [
-            {
-              "name": "messageToDecode",
-              "description": "The SWIFT MT message to decode."
-            },
-            {
-              "name": "messageValidation",
-              "type": "string",
-              "enum": [
-                "Enable",
-                "Disable"
-              ],
-              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate both."
-            }
-          ],
-          "required": [
-            "messageToDecode",
-            "messageValidation"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "integrationAccountOperations": {
-      "connectionProviderId": "connectionProviders/integrationAccountOperations",
-      "actions": {
-        "integrationAccountArtifactLookup": {
-          "summary": "Integration account artifact lookup",
-          "operationType": "IntegrationAccountArtifactLookup",
-          "parameters": [
-            {
-              "name": "artifactType",
-              "type": "string",
-              "enum": [
-                "Schema",
-                "Map",
-                "Partner",
-                "Agreement",
-                "RosettaNetProcessConfiguration"
-              ],
-              "description": "The type of artifact to fetch."
-            },
-            {
-              "name": "artifactName",
-              "type": "string",
-              "description": "The name of the artifact to fetch."
-            }
-          ],
-          "required": [
-            "artifactType",
-            "artifactName"
+            "method"
           ]
         }
       },
@@ -693,183 +289,49 @@
         }
       }
     },
-    "rosettaNetOperations": {
-      "connectionProviderId": "connectionProviders/rosettaNetOperations",
+    "dataMapperOperations": {
+      "connectionProviderId": "/connectionProviders/dataMapperOperations",
       "actions": {
-        "rosettaNetEncode": {
-          "summary": "Encode RosettaNet",
-          "operationType": "RosettaNetEncode",
+        "xsltTransform": {
+          "summary": "Transform using Data Mapper XSLT",
+          "operationType": "Xslt",
           "parameters": [
             {
-              "name": "messageToEncode",
-              "description": "The message to encode."
+              "name": "content",
+              "description": "Content"
             },
             {
-              "name": "hostPartnerName",
-              "type": "string",
-              "description": "The host partner name."
+              "name": "map",
+              "type": "object"
             },
             {
-              "name": "guestPartnerName",
-              "type": "string",
-              "description": "The guest partner name."
-            },
-            {
-              "name": "processConfigurationCode",
-              "type": "string",
-              "description": "The partner interface process (PIP) code."
-            },
-            {
-              "name": "processConfigurationVersion",
-              "type": "string",
-              "description": "The partner Interface Processes (PIP) version."
-            },
-            {
-              "name": "processConfigurationInstanceIdentity",
-              "type": "string",
-              "description": "The partner Interface Processes (PIP) instance identity."
-            },
-            {
-              "name": "messageType",
-              "type": "string",
-              "enum": [
-                "Action",
-                "Response",
-                "Signal"
-              ],
-              "description": "The message type."
-            },
-            {
-              "name": "trackingId",
-              "type": "string",
-              "description": "The tracking ID."
-            },
-            {
-              "name": "homeRole",
-              "type": "string",
-              "enum": [
-                "Initiator",
-                "Responder"
-              ],
-              "description": "The role of the host organization in this transaction."
-            },
-            {
-              "name": "attachments",
-              "type": "array",
-              "description": "The RosettaNet attachments."
-            }
-          ],
-          "required": [
-            "messageToEncode",
-            "guestPartnerName",
-            "hostPartnerName",
-            "processConfigurationCode",
-            "processConfigurationVersion",
-            "processConfigurationInstanceIdentity",
-            "messageType",
-            "homeRole"
-          ]
-        },
-        "rosettaNetDecode": {
-          "summary": "Decode RosettaNet",
-          "operationType": "RosettaNetDecode",
-          "parameters": [
-            {
-              "name": "messageToDecode",
-              "description": "The message to decode."
-            },
-            {
-              "name": "messageHeaders",
+              "name": "transformedContentSchema",
               "type": "object",
-              "description": "The message headers."
-            },
-            {
-              "name": "homeRole",
-              "type": "string",
-              "enum": [
-                "Initiator",
-                "Responder"
-              ],
-              "description": "The role of the host organization in this transaction."
+              "description": "The transformed content schema."
             }
           ],
           "required": [
-            "messageToDecode",
-            "messageHeaders",
-            "homeRole"
-          ]
-        },
-        "rosettaNetWaitForResponse": {
-          "summary": "Wait for RosettaNet response",
-          "operationType": "RosettaNetWaitForResponse",
-          "parameters": [
-            {
-              "name": "serviceContent",
-              "description": "The original message."
-            },
-            {
-              "name": "processInstanceIdentity",
-              "type": "string",
-              "description": "The Partner Interface Processes (PIP) instance identity."
-            },
-            {
-              "name": "retryCount",
-              "type": "integer",
-              "description": "The retry count."
-            },
-            {
-              "name": "homeRole",
-              "type": "string",
-              "enum": [
-                "Initiator",
-                "Responder"
-              ],
-              "description": "The role of the host organization in this transaction."
-            },
-            {
-              "name": "pollingInterval",
-              "type": "object",
-              "description": "The polling interval."
-            }
-          ],
-          "required": [
-            "serviceContent",
-            "processInstanceIdentity",
-            "homeRole",
-            "retryCount"
+            "content",
+            "map"
           ]
         }
       },
       "triggers": {}
     },
-    "localFunctionOperation": {
-      "connectionProviderId": "connectionProviders/localFunctionOperation",
+    "dataOperationNew": {
+      "connectionProviderId": "/connectionProviders/dataOperationNew",
       "actions": {
-        "invokeFunction": {
-          "summary": "Call a local function in this logic app",
-          "operationType": "InvokeFunction",
-          "parameters": [
-            {
-              "name": "functionName",
-              "type": "string",
-              "description": "The name for the function."
-            },
-            {
-              "name": "parameters",
-              "type": "object",
-              "description": "The function parameters."
-            }
-          ],
-          "required": [
-            "functionName",
-            "parameters"
-          ]
+        "composeNew": {
+          "summary": "Compose",
+          "operationType": "Compose",
+          "parameters": [],
+          "required": []
         }
       },
       "triggers": {}
     },
     "edifactOperations": {
-      "connectionProviderId": "connectionProviders/edifactOperations",
+      "connectionProviderId": "/connectionProviders/edifactOperations",
       "actions": {
         "EdifactDecode": {
           "summary": "Decode EDIFACT",
@@ -1017,8 +479,649 @@
       },
       "triggers": {}
     },
+    "flatFileOperations": {
+      "connectionProviderId": "/connectionProviders/flatFileOperations",
+      "actions": {
+        "flatFileDecoding": {
+          "summary": "Decode flat file",
+          "operationType": "FlatFileDecoding",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The flat file content to decode."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "flatFileEncoding": {
+          "summary": "Encode flat file",
+          "operationType": "FlatFileEncoding",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The XML content to encode."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "emptyNodeGenerationMode",
+              "type": "string",
+              "enum": [
+                "ForcedDisabled",
+                "HonorSchemaNodeProperty",
+                "ForcedEnabled"
+              ],
+              "description": "The mode of empty node generation for flat file encoding."
+            },
+            {
+              "name": "xmlNormalization",
+              "type": "boolean",
+              "description": "The setting to enable or disable XML normalization for flat file encoding."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "flatFileSchemaGeneration": {
+          "summary": "Generate flat file schema",
+          "operationType": "FlatFileSchemaGeneration",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The flat file sample data content."
+            },
+            {
+              "name": "recordStructure",
+              "type": "string",
+              "enum": [
+                "Delimited",
+                "Positional"
+              ],
+              "description": "The record structure type."
+            },
+            {
+              "name": "rootElementName",
+              "type": "string",
+              "description": "The root element name for the generated schema."
+            },
+            {
+              "name": "targetNamespace",
+              "type": "string",
+              "description": "The target namespace for the generated schema."
+            },
+            {
+              "name": "hasHeader",
+              "type": "boolean",
+              "description": "Whether the first line of the sample data contains header/field names. When set to true, header values are used as field names in the generated schema."
+            },
+            {
+              "name": "recordDelimiter",
+              "type": "string",
+              "description": "The record delimiter (line separator). Defaults to newline."
+            },
+            {
+              "name": "recordDelimiterOrder",
+              "type": "string",
+              "enum": [
+                "Infix",
+                "Prefix",
+                "Postfix"
+              ],
+              "description": "The record delimiter order. Defaults to Infix."
+            },
+            {
+              "name": "recordName",
+              "type": "string",
+              "description": "The name of the record element for delimited data. Defaults to {RootElementName}_Record."
+            }
+          ],
+          "required": [
+            "content",
+            "recordStructure",
+            "hasHeader"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "hl7Operations": {
+      "connectionProviderId": "/connectionProviders/hl7Operations",
+      "actions": {
+        "hl7Decode": {
+          "summary": "Decode HL7",
+          "operationType": "HL7Decode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The HL7 message or batch message (FHS/BHS envelope) to decode. Batch messages are automatically detected and debatched."
+            },
+            {
+              "name": "acknowledgementMode",
+              "type": "string",
+              "enum": [
+                "None",
+                "Original",
+                "Enhanced"
+              ],
+              "description": "The acknowledgement mode to use for HL7 message processing. 'None' generates no acknowledgements, 'Original' generates standard application acknowledgements, and 'Enhanced' generates both application and accept acknowledgements."
+            }
+          ],
+          "required": [
+            "messageToDecode"
+          ]
+        },
+        "hl7Encode": {
+          "summary": "Encode HL7",
+          "operationType": "HL7Encode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The HL7 message to encode."
+            },
+            {
+              "name": "headerToEncode",
+              "description": "The HL7 header to encode."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "headerToEncode"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "inlineCode": {
+      "connectionProviderId": "/connectionProviders/inlineCode",
+      "actions": {
+        "javaScriptCode": {
+          "summary": "Execute JavaScript code",
+          "operationType": "JavaScriptCode",
+          "parameters": [
+            {
+              "name": "code",
+              "description": "The JavaScript code to execute."
+            },
+            {
+              "name": "explicitDependencies",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "code"
+          ]
+        },
+        "cSharpScriptCode": {
+          "summary": "Execute C# script code",
+          "operationType": "CSharpScriptCode",
+          "parameters": [
+            {
+              "name": "CodeFile",
+              "description": "The C# script to execute"
+            }
+          ],
+          "required": [
+            "CodeFile"
+          ]
+        },
+        "powershellCode": {
+          "summary": "Execute PowerShell script code",
+          "operationType": "PowershellCode",
+          "parameters": [
+            {
+              "name": "CodeFile",
+              "description": "The PowerShell script to execute."
+            }
+          ],
+          "required": [
+            "CodeFile"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "integrationAccountOperations": {
+      "connectionProviderId": "/connectionProviders/integrationAccountOperations",
+      "actions": {
+        "integrationAccountArtifactLookup": {
+          "summary": "Integration account artifact lookup",
+          "operationType": "IntegrationAccountArtifactLookup",
+          "parameters": [
+            {
+              "name": "artifactType",
+              "type": "string",
+              "enum": [
+                "Schema",
+                "Map",
+                "Partner",
+                "Agreement",
+                "RosettaNetProcessConfiguration"
+              ],
+              "description": "The type of artifact to fetch."
+            },
+            {
+              "name": "artifactName",
+              "type": "string",
+              "description": "The name of the artifact to fetch."
+            }
+          ],
+          "required": [
+            "artifactType",
+            "artifactName"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "liquidOperations": {
+      "connectionProviderId": "/connectionProviders/liquidOperations",
+      "actions": {
+        "liquidJsonToJson": {
+          "summary": "Transform JSON to JSON",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidJsonToText": {
+          "summary": "Transform JSON to text",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidXmlToJson": {
+          "summary": "Transform XML to JSON",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        },
+        "liquidXmlToText": {
+          "summary": "Transform XML to text",
+          "operationType": "Liquid",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The content."
+            },
+            {
+              "name": "map",
+              "type": "object"
+            },
+            {
+              "name": "transformedContentSchema",
+              "type": "object",
+              "description": "The transformed content schema."
+            }
+          ],
+          "required": [
+            "content",
+            "map"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "localFunctionOperation": {
+      "connectionProviderId": "/connectionProviders/localFunctionOperation",
+      "actions": {
+        "invokeFunction": {
+          "summary": "Call a local function in this logic app",
+          "operationType": "InvokeFunction",
+          "parameters": [
+            {
+              "name": "functionName",
+              "type": "string",
+              "description": "The name for the function."
+            },
+            {
+              "name": "parameters",
+              "type": "object",
+              "description": "The function parameters."
+            }
+          ],
+          "required": [
+            "functionName",
+            "parameters"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "localWorkflowOperation": {
+      "connectionProviderId": "/connectionProviders/localWorkflowOperation",
+      "actions": {
+        "invokeWorkflow": {
+          "summary": "Call workflow in this logic app",
+          "operationType": "Workflow",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "object"
+            },
+            {
+              "name": "body",
+              "description": "The trigger body"
+            },
+            {
+              "name": "headers",
+              "description": "The trigger headers."
+            }
+          ],
+          "required": [
+            "host"
+          ]
+        },
+        "invokeNestedAgent": {
+          "summary": "Send a task to a nested agent",
+          "operationType": "NestedAgent",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "object"
+            },
+            {
+              "name": "body",
+              "type": "object"
+            }
+          ],
+          "required": [
+            "host",
+            "body"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "rosettaNetOperations": {
+      "connectionProviderId": "/connectionProviders/rosettaNetOperations",
+      "actions": {
+        "rosettaNetEncode": {
+          "summary": "Encode RosettaNet",
+          "operationType": "RosettaNetEncode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The message to encode."
+            },
+            {
+              "name": "hostPartnerName",
+              "type": "string",
+              "description": "The host partner name."
+            },
+            {
+              "name": "guestPartnerName",
+              "type": "string",
+              "description": "The guest partner name."
+            },
+            {
+              "name": "processConfigurationCode",
+              "type": "string",
+              "description": "The partner interface process (PIP) code."
+            },
+            {
+              "name": "processConfigurationVersion",
+              "type": "string",
+              "description": "The partner Interface Processes (PIP) version."
+            },
+            {
+              "name": "processConfigurationInstanceIdentity",
+              "type": "string",
+              "description": "The partner Interface Processes (PIP) instance identity."
+            },
+            {
+              "name": "messageType",
+              "type": "string",
+              "enum": [
+                "Action",
+                "Response",
+                "Signal"
+              ],
+              "description": "The message type."
+            },
+            {
+              "name": "trackingId",
+              "type": "string",
+              "description": "The tracking ID."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            },
+            {
+              "name": "attachments",
+              "type": "array",
+              "description": "The RosettaNet attachments."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "guestPartnerName",
+            "hostPartnerName",
+            "processConfigurationCode",
+            "processConfigurationVersion",
+            "processConfigurationInstanceIdentity",
+            "messageType",
+            "homeRole"
+          ]
+        },
+        "rosettaNetDecode": {
+          "summary": "Decode RosettaNet",
+          "operationType": "RosettaNetDecode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The message to decode."
+            },
+            {
+              "name": "messageHeaders",
+              "type": "object",
+              "description": "The message headers."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            }
+          ],
+          "required": [
+            "messageToDecode",
+            "messageHeaders",
+            "homeRole"
+          ]
+        },
+        "rosettaNetWaitForResponse": {
+          "summary": "Wait for RosettaNet response",
+          "operationType": "RosettaNetWaitForResponse",
+          "parameters": [
+            {
+              "name": "serviceContent",
+              "description": "The original message."
+            },
+            {
+              "name": "processInstanceIdentity",
+              "type": "string",
+              "description": "The Partner Interface Processes (PIP) instance identity."
+            },
+            {
+              "name": "retryCount",
+              "type": "integer",
+              "description": "The retry count."
+            },
+            {
+              "name": "homeRole",
+              "type": "string",
+              "enum": [
+                "Initiator",
+                "Responder"
+              ],
+              "description": "The role of the host organization in this transaction."
+            },
+            {
+              "name": "pollingInterval",
+              "type": "object",
+              "description": "The polling interval."
+            }
+          ],
+          "required": [
+            "serviceContent",
+            "processInstanceIdentity",
+            "homeRole",
+            "retryCount"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "ruleEngineOperations": {
+      "connectionProviderId": "/connectionProviders/ruleEngineOperations",
+      "actions": {
+        "ruleexecute": {
+          "summary": "Execute Rules Engine",
+          "operationType": "RuleExecute",
+          "parameters": [
+            {
+              "name": "ruleSet",
+              "type": "string",
+              "description": "RuleSet file to be used."
+            },
+            {
+              "name": "factTypes",
+              "type": "object",
+              "description": "The fact types for rule set."
+            }
+          ],
+          "required": [
+            "ruleSet",
+            "factTypes"
+          ]
+        }
+      },
+      "triggers": {}
+    },
+    "swiftOperations": {
+      "connectionProviderId": "/connectionProviders/swiftOperations",
+      "actions": {
+        "SwiftMTEncode": {
+          "summary": "Encode SWIFT MT",
+          "operationType": "SwiftMTEncode",
+          "parameters": [
+            {
+              "name": "messageToEncode",
+              "description": "The SWIFT message to encode."
+            },
+            {
+              "name": "messageValidation",
+              "type": "string",
+              "enum": [
+                "Enable",
+                "Disable"
+              ],
+              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate."
+            }
+          ],
+          "required": [
+            "messageToEncode",
+            "messageValidation"
+          ]
+        },
+        "SwiftMTDecode": {
+          "summary": "Decode SWIFT MT",
+          "operationType": "SwiftMTDecode",
+          "parameters": [
+            {
+              "name": "messageToDecode",
+              "description": "The SWIFT MT message to decode."
+            },
+            {
+              "name": "messageValidation",
+              "type": "string",
+              "enum": [
+                "Enable",
+                "Disable"
+              ],
+              "description": "The option whether to validate messages based on both schema and business rules. The default is to validate both."
+            }
+          ],
+          "required": [
+            "messageToDecode",
+            "messageValidation"
+          ]
+        }
+      },
+      "triggers": {}
+    },
     "x12Operations": {
-      "connectionProviderId": "connectionProviders/x12Operations",
+      "connectionProviderId": "/connectionProviders/x12Operations",
       "actions": {
         "x12Encode": {
           "summary": "Encode X12",
@@ -1111,145 +1214,124 @@
       },
       "triggers": {}
     },
-    "hl7Operations": {
-      "connectionProviderId": "connectionProviders/hl7Operations",
+    "xmlOperations": {
+      "connectionProviderId": "/connectionProviders/xmlOperations",
       "actions": {
-        "hl7Decode": {
-          "summary": "Decode HL7",
-          "operationType": "HL7Decode",
-          "parameters": [
-            {
-              "name": "messageToDecode",
-              "description": "The HL7 message to decode."
-            },
-            {
-              "name": "acknowledgementMode",
-              "type": "string",
-              "enum": [
-                "None",
-                "Original",
-                "Enhanced"
-              ],
-              "description": "The acknowledgement mode to use for HL7 message processing. 'None' generates no acknowledgements, 'Original' generates standard application acknowledgements, and 'Enhanced' generates both application and accept acknowledgements."
-            }
-          ],
-          "required": [
-            "messageToDecode"
-          ]
-        },
-        "hl7Encode": {
-          "summary": "Encode HL7",
-          "operationType": "HL7Encode",
-          "parameters": [
-            {
-              "name": "messageToEncode",
-              "description": "The HL7 message to encode."
-            },
-            {
-              "name": "headerToEncode",
-              "description": "The HL7 header to encode."
-            }
-          ],
-          "required": [
-            "messageToEncode",
-            "headerToEncode"
-          ]
-        }
-      },
-      "triggers": {}
-    },
-    "aiOperations": {
-      "connectionProviderId": "connectionProviders/aiOperations",
-      "actions": {
-        "parsedocument": {
-          "summary": "Parse a document",
-          "operationType": "ParseDocument",
+        "xmlTransform": {
+          "summary": "Transform XML",
+          "operationType": "Xslt",
           "parameters": [
             {
               "name": "content",
-              "description": "The document content to parse."
-            }
-          ],
-          "required": [
-            "content"
-          ]
-        },
-        "chunktext": {
-          "summary": "Chunk text",
-          "operationType": "ChunkText",
-          "parameters": [
-            {
-              "name": "chunkingStrategy",
               "type": "string",
-              "enum": [
-                "TokenSize"
-              ],
-              "description": "The chunking strategy to use."
+              "description": "Content"
             },
             {
-              "name": "text",
-              "description": "The text to chunk."
-            }
-          ],
-          "required": [
-            "text",
-            "chunkingStrategy"
-          ]
-        },
-        "parsedocumentwithmetadata": {
-          "summary": "Parse document with metadata",
-          "operationType": "ParseDocumentWithMetadata",
-          "parameters": [
-            {
-              "name": "content",
-              "description": "The document content to parse."
+              "name": "map",
+              "type": "object"
             },
             {
-              "name": "fileType",
+              "name": "xsltParameters",
+              "type": "object",
+              "description": "XSLT Parameters."
+            },
+            {
+              "name": "xmlExtensionObject",
+              "description": "XML Extension Object."
+            },
+            {
+              "name": "transformOptions",
               "type": "string",
-              "enum": [
-                "PDF",
-                "DOC",
-                "DOCX",
-                "XLS",
-                "XLSX",
-                "PPT",
-                "PPTX",
-                "TXT",
-                "MD",
-                "HTML"
-              ],
-              "description": "The document's file type."
+              "description": "Transform options."
             }
           ],
           "required": [
             "content",
-            "fileType"
+            "map"
           ]
         },
-        "chunktextwithmetadata": {
-          "summary": "Chunk text with metadata",
-          "operationType": "ChunkTextWithMetadata",
+        "xmlValidation": {
+          "summary": "Validate XML",
+          "operationType": "XmlValidation",
           "parameters": [
             {
-              "name": "tokenSize",
-              "type": "integer",
-              "description": "The token size to use."
+              "name": "content",
+              "type": "string",
+              "description": "The content to validate."
             },
             {
-              "name": "chunkOverlapLength",
-              "type": "integer",
-              "description": "The chunk overlap length to use."
-            },
-            {
-              "name": "pageText",
-              "description": "The page text to chunk."
+              "name": "schema",
+              "type": "object"
             }
           ],
           "required": [
-            "tokenSize",
-            "chunkOverlapLength",
-            "pageText"
+            "content",
+            "schema"
+          ]
+        },
+        "XmlCompose": {
+          "summary": "Compose XML with schema",
+          "operationType": "XmlCompose",
+          "parameters": [
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "rootNodeQualifiedName",
+              "type": "string",
+              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
+            },
+            {
+              "name": "dateTimeFormat",
+              "type": "string",
+              "description": "The date and time format specifier, for example, 'dddd, MMM dd yyyy HH:mm:ss zzz'."
+            },
+            {
+              "name": "content",
+              "type": "object",
+              "description": "The XML compose input parameters."
+            },
+            {
+              "name": "xmlWriterSettings",
+              "type": "object",
+              "description": "The settings to control XML serialization behavior."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
+          ]
+        },
+        "XmlParse": {
+          "summary": "Parse XML with schema",
+          "operationType": "XmlParse",
+          "parameters": [
+            {
+              "name": "content",
+              "description": "The XML content to parse."
+            },
+            {
+              "name": "schema",
+              "type": "object"
+            },
+            {
+              "name": "xmlReaderSettings",
+              "type": "object"
+            },
+            {
+              "name": "jsonWriterSettings",
+              "type": "object"
+            },
+            {
+              "name": "rootNodeQualifiedName",
+              "type": "string",
+              "description": "The root node's qualified name in case the schema contains multiple unreferenced element definitions."
+            }
+          ],
+          "required": [
+            "content",
+            "schema"
           ]
         }
       },

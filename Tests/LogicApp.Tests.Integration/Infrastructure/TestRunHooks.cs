@@ -27,75 +27,111 @@ public sealed class TestRunHooks
     public static WireMockSetup? WireMock { get; private set; }
     public static ServiceBusHelper? ServiceBus { get; private set; }
     public static LogicAppTrigger? Trigger { get; private set; }
+    public static Exception? InfrastructureStartupError { get; private set; }
 
+    private static readonly System.Text.UTF8Encoding Utf8NoBom = new(encoderShouldEmitUTF8Identifier: false);
     private static string? _originalLocalSettings;
     private static string? _localSettingsPath;
+    private static string? _originalConnections;
+    private static string? _connectionsPath;
+    private static string? _originalParameters;
+    private static string? _parametersPath;
 
     [BeforeTestRun(Order = 0)]
     public static async Task BeforeAll()
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.test.json", optional: false)
-            .Build();
-
-        Azurite = new AzuriteFixture();
-        ServiceBusEmulator = new ServiceBusEmulatorFixture();
-        WireMock = new WireMockSetup();
-
-        // Emulator stack first -- func host reads connection strings from local.settings.json.
-        await Task.WhenAll(
-            Azurite.InitializeAsync(),
-            ServiceBusEmulator.InitializeAsync(),
-            WireMock.InitializeAsync());
-
-        var projectRelative = config["LogicApp:ProjectRelativePath"] ?? "../../../../../LogicApp_Template";
-        var startupTimeout = int.Parse(config["LogicApp:StartupTimeoutSeconds"] ?? "90");
-
-        // Patch local.settings.json on disk before booting the host. Env-var overrides are
-        // unreliable -- the func CLI reloads local.settings.json over the inherited env.
-        var logicAppRoot = FuncHostFixture.LocateLogicAppRoot(projectRelative);
-        _localSettingsPath = Path.Combine(logicAppRoot, "local.settings.json");
-        if (File.Exists(_localSettingsPath))
+        InfrastructureStartupError = null;
+        try
         {
-            _originalLocalSettings = File.ReadAllText(_localSettingsPath);
-            var doc = JObject.Parse(_originalLocalSettings);
-            var values = (JObject)(doc["Values"] ?? new JObject());
-            values["FUNCTIONS_WORKER_RUNTIME"] = "dotnet";
-            values["FUNCTIONS_INPROC_NET8_ENABLED"] = "1";
-            values["AzureWebJobsStorage"] = Azurite.ConnectionString;
-            values["serviceBus_connectionString"] = ServiceBusEmulator.ConnectionString;
-            values["externalApiUrl"] = WireMock.BaseUrl.TrimEnd('/') + (config["External:SamplePath"] ?? "/external/api");
-            // Add further product-specific app-setting patches here, e.g.:
-            //   values["myAuthHeader"] = "test-token";
-            //   values["anotherServiceUrl"] = WireMock.BaseUrl.TrimEnd('/') + "/another";
-            doc["Values"] = values;
-            File.WriteAllText(_localSettingsPath, doc.ToString());
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.test.json", optional: false)
+                .Build();
+
+            Azurite = new AzuriteFixture();
+            ServiceBusEmulator = new ServiceBusEmulatorFixture();
+            WireMock = new WireMockSetup();
+
+            // Emulator stack first -- func host reads connection strings from local.settings.json.
+            await Task.WhenAll(
+                Azurite.InitializeAsync(),
+                ServiceBusEmulator.InitializeAsync(),
+                WireMock.InitializeAsync());
+
+            var projectRelative = config["LogicApp:ProjectRelativePath"] ?? "../../../../../LogicApp_Template";
+            var startupTimeout = int.Parse(config["LogicApp:StartupTimeoutSeconds"] ?? "90");
+
+            // Snapshot connections.json, parameters.json, and local.settings.json before booting the host.
+            var logicAppRoot = FuncHostFixture.LocateLogicAppRoot(projectRelative);
+            _connectionsPath = Path.Combine(logicAppRoot, "connections.json");
+            if (File.Exists(_connectionsPath))
+            {
+                _originalConnections = File.ReadAllText(_connectionsPath, Utf8NoBom);
+            }
+
+            _parametersPath = Path.Combine(logicAppRoot, "parameters.json");
+            if (File.Exists(_parametersPath))
+            {
+                _originalParameters = File.ReadAllText(_parametersPath, Utf8NoBom);
+            }
+
+            _localSettingsPath = Path.Combine(logicAppRoot, "local.settings.json");
+            if (File.Exists(_localSettingsPath))
+            {
+                _originalLocalSettings = File.ReadAllText(_localSettingsPath, Utf8NoBom);
+                var doc = JObject.Parse(_originalLocalSettings);
+                var values = (JObject)(doc["Values"] ?? new JObject());
+                values["FUNCTIONS_WORKER_RUNTIME"] = "dotnet";
+                values["FUNCTIONS_INPROC_NET8_ENABLED"] = "1";
+                values["AzureWebJobsStorage"] = Azurite.ConnectionString;
+                values["serviceBus_connectionString"] = ServiceBusEmulator.ConnectionString;
+                values["externalApiUrl"] = WireMock.BaseUrl.TrimEnd('/') + (config["External:SamplePath"] ?? "/external/api");
+                // Add further product-specific app-setting patches here, e.g.:
+                //   values["myAuthHeader"] = "test-token";
+                //   values["anotherServiceUrl"] = WireMock.BaseUrl.TrimEnd('/') + "/another";
+                doc["Values"] = values;
+                File.WriteAllText(_localSettingsPath, doc.ToString(), Utf8NoBom);
+            }
+
+            FuncHost = new FuncHostFixture();
+            await FuncHost.InitializeAsync(projectRelative, startupTimeout, new Dictionary<string, string>
+            {
+                ["AzureWebJobsStorage"] = Azurite.ConnectionString,
+                ["FUNCTIONS_WORKER_RUNTIME"] = "dotnet",
+                ["FUNCTIONS_INPROC_NET8_ENABLED"] = "1",
+            });
+
+            ServiceBus = new ServiceBusHelper(ServiceBusEmulator.ConnectionString);
+            Trigger = new LogicAppTrigger(
+                new System.Net.Http.HttpClient { Timeout = TimeSpan.FromMinutes(5) },
+                FuncHost.BaseAddress,
+                FuncHost,
+                defaultWorkflow: config["Workflows:Sample"] ?? "sample-order-servicebus",
+                defaultTrigger: config["Triggers:Sample"] ?? "When_a_HTTP_request_is_received");
         }
-
-        FuncHost = new FuncHostFixture();
-        await FuncHost.InitializeAsync(projectRelative, startupTimeout, new Dictionary<string, string>
+        catch (Exception ex)
         {
-            ["AzureWebJobsStorage"] = Azurite.ConnectionString,
-            ["FUNCTIONS_WORKER_RUNTIME"] = "dotnet",
-            ["FUNCTIONS_INPROC_NET8_ENABLED"] = "1",
-        });
+            InfrastructureStartupError = ex;
+            RestoreConfigFiles();
+        }
+    }
 
-        ServiceBus = new ServiceBusHelper(ServiceBusEmulator.ConnectionString);
-        Trigger = new LogicAppTrigger(
-            new System.Net.Http.HttpClient { Timeout = TimeSpan.FromMinutes(5) },
-            FuncHost.BaseAddress,
-            FuncHost,
-            defaultWorkflow: config["Workflows:Sample"] ?? "sample-order-servicebus",
-            defaultTrigger: config["Triggers:Sample"] ?? "When_a_HTTP_request_is_received");
+    [BeforeScenario(Order = 0)]
+    public void FailFastOnStartupError()
+    {
+        if (InfrastructureStartupError is not null)
+        {
+            throw new InvalidOperationException(
+                $"Integration test infrastructure failed during [BeforeTestRun]: {InfrastructureStartupError.Message}",
+                InfrastructureStartupError);
+        }
     }
 
     [AfterTestRun]
     public static async Task AfterAll()
     {
-        // Restore local.settings.json FIRST so that a later fixture-dispose failure can never
-        // leave the file patched with emulator connection strings (which would break the next
-        // native F5 run / designer load).
-        RestoreLocalSettings();
+        // Restore patched LogicApp config files FIRST (UTF-8 no BOM) so that a later fixture-dispose
+        // failure can never leave local.settings.json, connections.json, or parameters.json dirty.
+        RestoreConfigFiles();
 
         if (FuncHost is not null) await FuncHost.DisposeAsync();
         if (ServiceBus is not null) await ServiceBus.DisposeAsync();
@@ -104,11 +140,18 @@ public sealed class TestRunHooks
         if (Azurite is not null) await Azurite.DisposeAsync();
     }
 
-    private static void RestoreLocalSettings()
+    private static void RestoreConfigFiles()
     {
-        if (_localSettingsPath is not null && _originalLocalSettings is not null && File.Exists(_localSettingsPath))
+        RestoreSingleFile(_localSettingsPath, _originalLocalSettings);
+        RestoreSingleFile(_connectionsPath, _originalConnections);
+        RestoreSingleFile(_parametersPath, _originalParameters);
+    }
+
+    private static void RestoreSingleFile(string? path, string? originalContent)
+    {
+        if (path is not null && originalContent is not null && File.Exists(path))
         {
-            try { File.WriteAllText(_localSettingsPath, _originalLocalSettings); } catch { }
+            try { File.WriteAllText(path, originalContent, Utf8NoBom); } catch { }
         }
     }
 }

@@ -5,12 +5,21 @@
     "FUNCTIONS_INPROC_NET8_ENABLED": "1",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "APP_KIND": "workflowapp",
-    "WORKFLOWS_SUBSCRIPTION_ID": "",
     
     "serviceBus_connectionString": "YOUR_SERVICE_BUS_CONNECTION_STRING",
     "AzureBlob_connectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
     "azureTables_connectionString": "YOUR_TABLE_STORAGE_CONNECTION_STRING",
     "azurequeues_connectionString": "YOUR_QUEUE_STORAGE_CONNECTION_STRING",
+    "sql_connectionString": "YOUR_SQL_CONNECTION_STRING",
+
+    "sftp_sshHostAddress": "127.0.0.1",
+    "sftp_portNumber": "22",
+    "sftp_userName": "YOUR_SFTP_USERNAME",
+    "sftp_password": "YOUR_SFTP_PASSWORD",
+
+    "ftp_serverAddress": "127.0.0.1",
+    "ftp_userName": "YOUR_FTP_USERNAME",
+    "ftp_password": "YOUR_FTP_PASSWORD",
      
     "externalApiUrl": "https://api.example.com/endpoint",
     "externalServiceUrl": "https://service.example.com/api",

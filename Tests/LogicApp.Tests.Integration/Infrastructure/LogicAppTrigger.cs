@@ -64,15 +64,67 @@ public sealed class LogicAppTrigger
         return await _http.SendAsync(req);
     }
 
-    public async Task<HttpResponseMessage> InvokeHttpTrigger(string workflow, string triggerName, HttpContent? body)
+    public Task<HttpResponseMessage> InvokeHttpTrigger(string workflow, string triggerName, HttpContent? body) =>
+        InvokeHttpTrigger(HttpMethod.Post, workflow, triggerName, body);
+
+    public async Task<HttpResponseMessage> InvokeHttpTrigger(
+        HttpMethod method,
+        string workflow,
+        string triggerName,
+        HttpContent? body = null,
+        string? relativePath = null,
+        string? extraQuery = null,
+        IDictionary<string, string>? headers = null)
     {
-        // Fetch the workflow's Request-trigger callback URL. Posting to this URL invokes the
+        // Fetch the workflow's Request-trigger callback URL. Invoking this URL executes the
         // workflow synchronously and returns the Response action's actual status + body, whereas
         // the management /triggers/{name}/run endpoint is fire-and-forget and always returns 202.
         var callback = await GetCallbackUrlWithRetry(workflow, triggerName, TimeSpan.FromSeconds(90));
+        var raw = callback.OriginalString;
+        var qIndex = raw.IndexOf('?');
+        var basePart = qIndex >= 0 ? raw[..qIndex] : raw;
+        var queryPart = qIndex >= 0 ? raw[qIndex..] : string.Empty;
 
-        var req = new HttpRequestMessage(HttpMethod.Post, callback);
+        if (!string.IsNullOrWhiteSpace(relativePath))
+        {
+            var normalizedRel = relativePath.StartsWith('/') ? relativePath : "/" + relativePath;
+            if (basePart.EndsWith("/invoke", StringComparison.OrdinalIgnoreCase))
+            {
+                basePart = $"{basePart}{normalizedRel}";
+            }
+            else
+            {
+                var invokeIdx = basePart.IndexOf("/invoke/", StringComparison.OrdinalIgnoreCase);
+                if (invokeIdx >= 0)
+                {
+                    basePart = $"{basePart[..(invokeIdx + "/invoke".Length)]}{normalizedRel}";
+                }
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(extraQuery))
+        {
+            var trimmedExtra = extraQuery.TrimStart('?', '&');
+            queryPart = string.IsNullOrEmpty(queryPart)
+                ? "?" + trimmedExtra
+                : queryPart + "&" + trimmedExtra;
+        }
+
+        var req = new HttpRequestMessage(method, new Uri($"{basePart}{queryPart}"));
         if (body is not null) req.Content = body;
+        if (headers is not null)
+        {
+            foreach (var kv in headers)
+            {
+                if (string.Equals(kv.Key, "Content-Type", StringComparison.OrdinalIgnoreCase))
+                {
+                    req.Content?.Headers.Remove("Content-Type");
+                    req.Content?.Headers.TryAddWithoutValidation("Content-Type", kv.Value);
+                    continue;
+                }
+                req.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
+            }
+        }
         return await _http.SendAsync(req);
     }
 
@@ -108,7 +160,40 @@ public sealed class LogicAppTrigger
             await Task.Delay(delay);
             delay = TimeSpan.FromMilliseconds(Math.Min(delay.TotalMilliseconds * 2, 5000));
         }
-        throw new TimeoutException($"listCallbackUrl for {workflow}/{triggerName} not ready within deadline (last={(int?)last?.StatusCode})");
+
+        var healthInfo = await GetWorkflowHealthSummaryAsync(workflow);
+        throw new TimeoutException(
+            $"listCallbackUrl for {workflow}/{triggerName} not ready within deadline (last={(int?)last?.StatusCode}).{healthInfo}\nFuncHost tail:\n{_funcHost.GetCapturedOutput()}");
+    }
+
+    private async Task<string> GetWorkflowHealthSummaryAsync(string workflow)
+    {
+        try
+        {
+            var wfUrl = new Uri(
+                _baseAddress,
+                $"runtime/webhooks/workflow/api/management/workflows/{workflow}?api-version=2020-05-01-preview");
+            var wfResp = await _http.GetAsync(wfUrl);
+            var raw = await wfResp.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(raw);
+            if (doc.RootElement.TryGetProperty("properties", out var props)
+                && props.TryGetProperty("health", out var health))
+            {
+                var state = health.TryGetProperty("state", out var s) ? s.GetString() : null;
+                string? errMsg = null;
+                if (health.TryGetProperty("error", out var err) && err.TryGetProperty("message", out var m))
+                    errMsg = m.GetString();
+                else if (health.TryGetProperty("errorMessage", out var em))
+                    errMsg = em.GetString();
+
+                return $" Workflow health state='{state ?? "unknown"}' error='{errMsg ?? "none"}'.";
+            }
+            return $" Workflow health ({(int)wfResp.StatusCode}): {raw}";
+        }
+        catch (Exception ex)
+        {
+            return $" Workflow health lookup failed: {ex.Message}";
+        }
     }
 
     public async Task<string> ForceTrigger(string workflow, string triggerName)
@@ -127,6 +212,7 @@ public sealed class LogicAppTrigger
         string? runName = null;
         while (DateTime.UtcNow < deadline)
         {
+            var pollDelay = TimeSpan.FromMilliseconds(2000);
             try
             {
                 var resp = await _http.GetAsync(url);
@@ -140,6 +226,7 @@ public sealed class LogicAppTrigger
                         var status = props.GetProperty("status").GetString();
                         runName = arr[0].GetProperty("name").GetString();
                         if (status is "Succeeded") return status;
+                        if (status is "Running" or "Waiting") pollDelay = TimeSpan.FromMilliseconds(500);
                         if (status is "Failed" or "Cancelled" or "TimedOut")
                         {
                             var diag = await BuildFailureDiagnostics(workflow, runName!);
@@ -151,9 +238,36 @@ public sealed class LogicAppTrigger
             }
             catch (InvalidOperationException) { throw; }
             catch { }
-            await Task.Delay(2000);
+            await Task.Delay(pollDelay);
         }
         throw new TimeoutException($"Workflow {workflow} did not complete within timeout");
+    }
+
+    /// <summary>
+    /// Returns the number of recorded workflow action repetitions for an action inside the latest run
+    /// (for example an action inside an Until loop). Prefer this over counting raw protocol commands
+    /// when asserting workflow retry limits.
+    /// </summary>
+    public async Task<int> GetLatestActionRepetitionCountAsync(string workflow, string actionName)
+    {
+        var runsUrl = new Uri(
+            _baseAddress,
+            $"runtime/webhooks/workflow/api/management/workflows/{workflow}/runs?api-version=2020-05-01-preview&$top=1");
+        var runsResp = await _http.GetAsync(runsUrl);
+        runsResp.EnsureSuccessStatusCode();
+        using var runsDoc = JsonDocument.Parse(await runsResp.Content.ReadAsStringAsync());
+        if (!runsDoc.RootElement.TryGetProperty("value", out var runs) || runs.GetArrayLength() == 0)
+            return 0;
+
+        var runName = runs[0].GetProperty("name").GetString()!;
+        var repsUrl = new Uri(
+            _baseAddress,
+            $"runtime/webhooks/workflow/api/management/workflows/{workflow}/runs/{runName}/actions/{actionName}/repetitions?api-version=2020-05-01-preview");
+        var repsResp = await _http.GetAsync(repsUrl);
+        if (!repsResp.IsSuccessStatusCode) return 0;
+
+        using var repsDoc = JsonDocument.Parse(await repsResp.Content.ReadAsStringAsync());
+        return repsDoc.RootElement.TryGetProperty("value", out var reps) ? reps.GetArrayLength() : 0;
     }
 
     private async Task<string> BuildFailureDiagnostics(string workflow, string runName)

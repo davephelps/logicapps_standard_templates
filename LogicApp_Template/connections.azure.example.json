@@ -1,0 +1,94 @@
+{
+  "$comment": "Reference ManagedServiceIdentity connection shapes verified against ExtensionBundle.Workflows 1.194.31 runtime manifests. Copy the required blocks into connections.json when deploying to Azure; keep connectionString shapes in local/connections.emulator.json for local emulator runs.",
+  "serviceProviderConnections": {
+    "serviceBus": {
+      "parameterValues": {
+        "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/serviceBus"
+      },
+      "displayName": "ServiceBus_MSI_SystemAssigned"
+    },
+    "serviceBus_userAssigned": {
+      "parameterValues": {
+        "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/serviceBus"
+      },
+      "displayName": "ServiceBus_MSI_UserAssigned"
+    },
+    "AzureBlob": {
+      "parameterValues": {
+        "managedIdentityType": "SystemAssigned",
+        "blobStorageEndpoint": "@appsetting('AzureBlob_blobStorageEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureBlob"
+      },
+      "displayName": "AzureBlob_MSI_SystemAssigned"
+    },
+    "AzureBlob_userAssigned": {
+      "parameterValues": {
+        "managedIdentityType": "UserAssigned",
+        "blobStorageEndpoint": "@appsetting('AzureBlob_blobStorageEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureBlob"
+      },
+      "displayName": "AzureBlob_MSI_UserAssigned"
+    },
+    "sql": {
+      "parameterValues": {
+        "managedIdentityType": "SystemAssigned",
+        "serverName": "@appsetting('sql_serverName')",
+        "databaseName": "@appsetting('sql_databaseName')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/sql"
+      },
+      "displayName": "Sql_MSI_SystemAssigned"
+    },
+    "sql_userAssigned": {
+      "parameterValues": {
+        "managedIdentityType": "UserAssigned",
+        "managedIdentityClientId": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_CLIENT_ID')",
+        "serverName": "@appsetting('sql_serverName')",
+        "databaseName": "@appsetting('sql_databaseName')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/sql"
+      },
+      "displayName": "Sql_MSI_UserAssigned"
+    }
+  },
+  "managedApiConnections": {}
+}

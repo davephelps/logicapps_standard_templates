@@ -42,16 +42,37 @@
     },
     "sftp": {
       "parameterValues": {
-        "hostName":   "@appsetting('sftp_hostName')",
-        "portNumber": "@appsetting('sftp_portNumber')",
-        "userName":   "@appsetting('sftp_userName')",
-        "password":   "@appsetting('sftp_password')"
+        "sshHostAddress": "@appsetting('sftp_sshHostAddress')",
+        "portNumber":     "@appsetting('sftp_portNumber')",
+        "userName":       "@appsetting('sftp_userName')",
+        "password":       "@appsetting('sftp_password')"
       },
-      "parameterSetName": "usernamePassword",
       "serviceProvider": {
         "id": "/serviceProviders/Sftp"
       },
       "displayName": "Sftp_Connection"
+    },
+    "ftp": {
+      "parameterValues": {
+        "serverAddress": "@appsetting('ftp_serverAddress')",
+        "portNumber":    21,
+        "userName":      "@appsetting('ftp_userName')",
+        "password":      "@appsetting('ftp_password')"
+      },
+      "serviceProvider": {
+        "id": "/serviceProviders/Ftp"
+      },
+      "displayName": "Ftp_Connection"
+    },
+    "sql": {
+      "parameterValues": {
+        "connectionString": "@appsetting('sql_connectionString')"
+      },
+      "parameterSetName": "connectionString",
+      "serviceProvider": {
+        "id": "/serviceProviders/sql"
+      },
+      "displayName": "Sql_Connection"
     }
   },
   "managedApiConnections": {}

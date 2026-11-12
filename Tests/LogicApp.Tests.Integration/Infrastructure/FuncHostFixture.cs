@@ -11,12 +11,14 @@ namespace LogicApp.Tests.Integration.Infrastructure;
 public sealed class FuncHostFixture : IAsyncDisposable
 {
     private Process? _proc;
+    private int? _ownedProcessId;
     private readonly object _tailLock = new();
     private readonly System.Text.StringBuilder _tail = new();
     private const int TailMaxBytes = 8 * 1024;
 
     public Uri BaseAddress { get; private set; } = new("http://localhost:0/");
     public string LogicAppRoot { get; private set; } = string.Empty;
+    public int? OwnedProcessId => _ownedProcessId;
 
     public async Task InitializeAsync(string projectRelativePath, int startupTimeoutSeconds, IDictionary<string, string>? envOverrides = null)
     {
@@ -67,6 +69,7 @@ public sealed class FuncHostFixture : IAsyncDisposable
 
         if (_proc is not null)
         {
+            _ownedProcessId = _proc.Id;
             _proc.OutputDataReceived += (_, e) => AppendTail(e.Data);
             _proc.ErrorDataReceived += (_, e) => AppendTail(e.Data);
             _proc.BeginOutputReadLine();
@@ -172,10 +175,30 @@ public sealed class FuncHostFixture : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (_proc is { HasExited: false })
+        if (_proc is { HasExited: false } && _ownedProcessId == _proc.Id)
         {
-            try { _proc.Kill(entireProcessTree: true); } catch { }
-            try { await _proc.WaitForExitAsync(); } catch { }
+            try
+            {
+                _proc.Kill(entireProcessTree: true);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[WARN] FuncHostFixture failed to kill owned func host PID {_ownedProcessId}: {ex.Message}");
+            }
+
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            try
+            {
+                await _proc.WaitForExitAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Console.Error.WriteLine($"[WARN] FuncHostFixture timed out after 10s waiting for owned func host PID {_ownedProcessId} to exit.");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[WARN] FuncHostFixture error waiting for owned func host PID {_ownedProcessId}: {ex.Message}");
+            }
         }
         _proc?.Dispose();
     }

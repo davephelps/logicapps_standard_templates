@@ -41,6 +41,11 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
 
     public string ConnectionString { get; private set; } = string.Empty;
 
+    public sealed record TopicConfig(
+        string Name,
+        IReadOnlyList<string> Subscriptions,
+        string DefaultMessageTimeToLive = "PT1H");
+
     public async Task InitializeAsync()
     {
         var escape = Environment.GetEnvironmentVariable("SERVICEBUS_CONNECTION_STRING");
@@ -50,10 +55,17 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
             return;
         }
 
-        // Pre-declare every queue the workflows under test send to. The sample workflow
-        // sends to "sample-queue"; add more names here as your workflows need them.
+        // Pre-declare every queue and topic/subscription the workflows under test use.
+        // In servicebus-emulator:1.1.2, cap DefaultMessageTimeToLive at PT1H (multi-day TTLs
+        // such as P7D fail startup validation) and omit "Rules" on catch-all subscriptions
+        // (an explicit empty "Rules": [] array drops all published messages).
         _configMountFile = Path.Combine(Path.GetTempPath(), $"sb-emu-config-{Guid.NewGuid():N}.json");
-        File.WriteAllText(_configMountFile, BuildConfigJson(new[] { "sample-queue" }));
+        File.WriteAllText(
+            _configMountFile,
+            BuildConfigJson(
+                queueNames: new[] { "sample-queue" },
+                topics: Array.Empty<TopicConfig>()),
+            new System.Text.UTF8Encoding(false));
 
         _network = new NetworkBuilder().Build();
         await _network.CreateAsync();
@@ -90,9 +102,23 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
             "UseDevelopmentEmulator=true";
     }
 
-    private static string BuildConfigJson(IEnumerable<string> queueNames)
+    public static string BuildConfigJson(IEnumerable<string> queueNames, IEnumerable<TopicConfig>? topics = null)
     {
         var queues = string.Join(",\n            ", queueNames.Select(q => $@"{{ ""Name"": ""{q}"" }}"));
+        var topicEntries = (topics ?? Array.Empty<TopicConfig>()).Select(t =>
+        {
+            var ttl = string.IsNullOrWhiteSpace(t.DefaultMessageTimeToLive) ? "PT1H" : t.DefaultMessageTimeToLive;
+            var subs = string.Join(",\n                ", t.Subscriptions.Select(s =>
+                $@"{{ ""Name"": ""{s}"", ""Properties"": {{ ""DefaultMessageTimeToLive"": ""{ttl}"", ""LockDuration"": ""PT1M"", ""MaxDeliveryCount"": 10, ""DeadLetteringOnMessageExpiration"": true, ""RequiresSession"": false }} }}"));
+            return $@"{{
+              ""Name"": ""{t.Name}"",
+              ""Properties"": {{ ""DefaultMessageTimeToLive"": ""{ttl}"" }},
+              ""Subscriptions"": [
+                {subs}
+              ]
+            }}";
+        });
+        var topicsJson = string.Join(",\n            ", topicEntries);
         return $@"{{
   ""UserConfig"": {{
     ""Namespaces"": [
@@ -101,7 +127,9 @@ public sealed class ServiceBusEmulatorFixture : IAsyncDisposable
         ""Queues"": [
             {queues}
         ],
-        ""Topics"": []
+        ""Topics"": [
+            {topicsJson}
+        ]
       }}
     ],
     ""Logging"": {{ ""Type"": ""File"" }}

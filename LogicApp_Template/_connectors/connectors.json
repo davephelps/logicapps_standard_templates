@@ -1,10 +1,35 @@
 {
-  "bundleVersion": "1.161.25",
-  "generatedUtc": "2026-05-06T12:51:40.4097407Z",
+  "bundleVersion": "1.194.31",
+  "generatedUtc": "2026-11-12T10:52:05.3212818Z",
   "serviceProviders": {
     "acasession": {
       "serviceProviderId": "/serviceProviders/acasession",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "poolManagementEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "executeCode": {
           "summary": "Execute Python code",
@@ -82,114 +107,122 @@
       },
       "triggers": {}
     },
-    "azureAutomation": {
-      "serviceProviderId": "/serviceProviders/azureAutomation",
-      "connectionStringSetting": null,
-      "actions": {
-        "createJob": {
-          "summary": "Create Job",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "subscriptionId",
-              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
-            },
-            {
-              "name": "resourceGroup",
-              "description": "The name of the Azure Resource Group"
-            },
-            {
-              "name": "automationAccount",
-              "description": "The name of the Azure Automation Account"
-            },
-            {
-              "name": "waitForJob",
-              "type": "boolean",
-              "description": "Wait for the job to finish before completing the action."
-            },
-            {
-              "name": "hybridAutomationWorkerGroup",
-              "description": "Worker Group to Run on."
-            },
-            {
-              "name": "runbookName",
-              "description": "Name of the runbook to run."
-            },
-            {
-              "name": "runbookParameters",
-              "type": "object",
-              "description": "Runbook Parameters as key/value pair {..}"
-            }
-          ],
-          "required": [
-            "subscriptionId",
-            "resourceGroup",
-            "automationAccount",
-            "runbookName"
-          ]
-        },
-        "getJobStatus": {
-          "summary": "Get Status of Job",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "subscriptionId",
-              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
-            },
-            {
-              "name": "resourceGroup",
-              "description": "The name of the Azure Resource Group"
-            },
-            {
-              "name": "automationAccount",
-              "description": "The name of the Azure Automation Account"
-            },
-            {
-              "name": "jobId",
-              "description": "GUID for the automation job."
-            }
-          ],
-          "required": [
-            "subscriptionId",
-            "resourceGroup",
-            "automationAccount",
-            "jobId"
-          ]
-        },
-        "getJobOutput": {
-          "summary": "Get Job Output",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "subscriptionId",
-              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
-            },
-            {
-              "name": "resourceGroup",
-              "description": "The name of the Azure Resource Group"
-            },
-            {
-              "name": "automationAccount",
-              "description": "The name of the Azure Automation Account"
-            },
-            {
-              "name": "jobId",
-              "description": "GUID for the automation job."
-            }
-          ],
-          "required": [
-            "subscriptionId",
-            "resourceGroup",
-            "automationAccount",
-            "jobId"
-          ]
-        }
-      },
-      "triggers": {}
-    },
     "azureaisearch": {
       "serviceProviderId": "/serviceProviders/azureaisearch",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "ConnectionString": {
+          "parameters": {
+            "searchServiceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "searchServiceAdminKey": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "searchServiceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "searchServiceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "indexDocuments": {
           "summary": "Index multiple documents",
@@ -410,9 +443,257 @@
       },
       "triggers": {}
     },
+    "azureAutomation": {
+      "serviceProviderId": "/serviceProviders/azureAutomation",
+      "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "BaseUri": {
+              "type": "string",
+              "required": false
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "BaseUri": {
+              "type": "string",
+              "required": false
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "createJob": {
+          "summary": "Create Job",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "subscriptionId",
+              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
+            },
+            {
+              "name": "resourceGroup",
+              "description": "The name of the Azure Resource Group"
+            },
+            {
+              "name": "automationAccount",
+              "description": "The name of the Azure Automation Account"
+            },
+            {
+              "name": "waitForJob",
+              "type": "boolean",
+              "description": "Wait for the job to finish before completing the action."
+            },
+            {
+              "name": "hybridAutomationWorkerGroup",
+              "description": "Worker Group to Run on."
+            },
+            {
+              "name": "runbookName",
+              "description": "Name of the runbook to run."
+            },
+            {
+              "name": "runbookParameters",
+              "type": "object",
+              "description": "Runbook Parameters as key/value pair {..}"
+            }
+          ],
+          "required": [
+            "subscriptionId",
+            "resourceGroup",
+            "automationAccount",
+            "runbookName"
+          ]
+        },
+        "getJobStatus": {
+          "summary": "Get Status of Job",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "subscriptionId",
+              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
+            },
+            {
+              "name": "resourceGroup",
+              "description": "The name of the Azure Resource Group"
+            },
+            {
+              "name": "automationAccount",
+              "description": "The name of the Azure Automation Account"
+            },
+            {
+              "name": "jobId",
+              "description": "GUID for the automation job."
+            }
+          ],
+          "required": [
+            "subscriptionId",
+            "resourceGroup",
+            "automationAccount",
+            "jobId"
+          ]
+        },
+        "getJobOutput": {
+          "summary": "Get Job Output",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "subscriptionId",
+              "description": "The unique identifier for the Microsoft Azure Subscription. The Subscription Id forms a part of the ID for every Azure Resource"
+            },
+            {
+              "name": "resourceGroup",
+              "description": "The name of the Azure Resource Group"
+            },
+            {
+              "name": "automationAccount",
+              "description": "The name of the Azure Automation Account"
+            },
+            {
+              "name": "jobId",
+              "description": "GUID for the automation job."
+            }
+          ],
+          "required": [
+            "subscriptionId",
+            "resourceGroup",
+            "automationAccount",
+            "jobId"
+          ]
+        }
+      },
+      "triggers": {}
+    },
     "AzureBlob": {
       "serviceProviderId": "/serviceProviders/AzureBlob",
       "connectionStringSetting": "AzureBlob_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "blobStorageEndpoint": {
+              "type": "string",
+              "required": true
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "managedIdentityType": {
+              "type": "string",
+              "required": true
+            },
+            "Identity": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "managedIdentityType",
+                "value": "UserAssigned"
+              }
+            },
+            "blobStorageEndpoint": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      },
       "actions": {
         "blobExists": {
           "summary": "Check whether blob exists",
@@ -1083,9 +1364,434 @@
         }
       }
     },
+    "AzureCosmosDB": {
+      "serviceProviderId": "/serviceProviders/AzureCosmosDB",
+      "connectionStringSetting": "AzureCosmosDB_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "managedIdentityType": {
+              "type": "string",
+              "required": false
+            },
+            "Identity": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "managedIdentityType",
+                "value": "UserAssigned"
+              }
+            },
+            "accountURI": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      },
+      "actions": {
+        "BulkCreateOrUpdateDocument": {
+          "summary": "Create or update many items in bulk",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "items",
+              "type": "object",
+              "description": "The items to be created or updated."
+            },
+            {
+              "name": "isUpsert",
+              "type": "boolean",
+              "description": "If true, the item will be replaced if exists, else it will be created."
+            }
+          ],
+          "required": [
+            "databaseId",
+            "containerId",
+            "items"
+          ]
+        },
+        "CreateOrUpdateDocument": {
+          "summary": "Create or update item",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "item",
+              "type": "string",
+              "description": "The item to be created or updated."
+            },
+            {
+              "name": "partitionKey",
+              "type": "string",
+              "description": "The partition key for the request."
+            },
+            {
+              "name": "isUpsert",
+              "type": "boolean",
+              "description": "If true, the item will be replaced if exists, else it will be created."
+            },
+            {
+              "name": "sessionToken",
+              "type": "string",
+              "description": "The session token associated with the read/write operation to maintain session consistency."
+            },
+            {
+              "name": "etag",
+              "type": "string",
+              "description": "The entity tag associated with the item."
+            }
+          ],
+          "required": [
+            "containerId",
+            "databaseId",
+            "item"
+          ]
+        },
+        "DeleteDocument": {
+          "summary": "Delete an item",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "itemId",
+              "type": "string",
+              "description": "The Id value of the requested item."
+            },
+            {
+              "name": "partitionKey",
+              "type": "string",
+              "description": "The partition key for the request."
+            },
+            {
+              "name": "sessionToken",
+              "type": "string",
+              "description": "The session token associated with the read/write operation to maintain session consistency."
+            }
+          ],
+          "required": [
+            "databaseId",
+            "containerId",
+            "itemId",
+            "partitionKey"
+          ]
+        },
+        "QueryDocuments": {
+          "summary": "Query items",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "queryText",
+              "type": "string",
+              "description": "The Azure Cosmos DB SQL query text."
+            },
+            {
+              "name": "partitionKey",
+              "type": "string",
+              "description": "The partition key for the request."
+            },
+            {
+              "name": "continuationToken",
+              "type": "string",
+              "description": "The continuation token for this query given by the Azure Cosmos DB service, if any."
+            },
+            {
+              "name": "maxItemCount",
+              "type": "string",
+              "description": "The maximum number of items to be returned by the query."
+            },
+            {
+              "name": "sessionToken",
+              "type": "string",
+              "description": "The session token associated with the read/write operation to maintain session consistency."
+            }
+          ],
+          "required": [
+            "databaseId",
+            "containerId",
+            "queryText"
+          ]
+        },
+        "ReadDocument": {
+          "summary": "Read an item",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "itemId",
+              "type": "string",
+              "description": "The Id value of the requested item."
+            },
+            {
+              "name": "partitionKey",
+              "type": "string",
+              "description": "The partition key for the request."
+            },
+            {
+              "name": "sessionToken",
+              "type": "string",
+              "description": "The session token associated with the read/write operation to maintain session consistency."
+            }
+          ],
+          "required": [
+            "databaseId",
+            "containerId",
+            "itemId",
+            "partitionKey"
+          ]
+        },
+        "PatchItem": {
+          "summary": "Patch an item",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseId",
+              "type": "string",
+              "description": "The name of the database."
+            },
+            {
+              "name": "containerId",
+              "type": "string",
+              "description": "The name of the container."
+            },
+            {
+              "name": "itemId",
+              "type": "string",
+              "description": "The Id value of the requested item."
+            },
+            {
+              "name": "partitionKey",
+              "type": "string",
+              "description": "The partition key for the request."
+            },
+            {
+              "name": "sessionToken",
+              "type": "string",
+              "description": "The session token associated with the read/write operation to maintain session consistency."
+            },
+            {
+              "name": "patchOperations",
+              "type": "array"
+            }
+          ],
+          "required": [
+            "databaseId",
+            "containerId",
+            "itemId",
+            "partitionKey",
+            "patchOperations"
+          ]
+        }
+      },
+      "triggers": {
+        "whenADocumentIsCreatedOrModified": {
+          "summary": "When an item is created or modified",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "databaseName",
+              "type": "string",
+              "description": "The name of the database with the monitored and lease containers."
+            },
+            {
+              "name": "collectionName",
+              "type": "string",
+              "description": "The name of the container being monitored."
+            },
+            {
+              "name": "leaseCollectionName",
+              "type": "string",
+              "description": "The name of the container used to store leases."
+            },
+            {
+              "name": "createLeaseCollectionIfNotExists",
+              "type": "boolean",
+              "description": "If true, the lease container is created when it doesn't already exist."
+            },
+            {
+              "name": "leasesCollectionThroughput",
+              "type": "integer",
+              "description": "The number of Request Units to assign when the lease container is created."
+            }
+          ],
+          "required": [
+            "databaseName",
+            "collectionName"
+          ]
+        }
+      }
+    },
     "AzureFile": {
       "serviceProviderId": "/serviceProviders/AzureFile",
       "connectionStringSetting": "AzureFile_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "storageAccountUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "storageAccountUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "copyFile": {
           "summary": "Copy file",
@@ -1362,6 +2068,115 @@
     "azurequeues": {
       "serviceProviderId": "/serviceProviders/azurequeues",
       "connectionStringSetting": "azurequeues_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "queueServiceUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "queueServiceUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "putMessage": {
           "summary": "Add a message to queue",
@@ -1518,6 +2333,115 @@
     "azureTables": {
       "serviceProviderId": "/serviceProviders/azureTables",
       "connectionStringSetting": "azureTables_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "tableStorageEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "tableStorageEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "createTable": {
           "summary": "Create table",
@@ -1744,6 +2668,301 @@
     "cicsProgramCall": {
       "serviceProviderId": "/serviceProviders/cicsProgramCall",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "ElmLink": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "certificateCommonName": {
+              "type": "string",
+              "required": false
+            },
+            "clientCertificateThumbprint": {
+              "type": "securestring",
+              "required": false
+            },
+            "useIbmRequestHeaderFormat": {
+              "type": "bool",
+              "required": false
+            }
+          }
+        },
+        "ElmUserData": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "certificateCommonName": {
+              "type": "string",
+              "required": false
+            },
+            "clientCertificateThumbprint": {
+              "type": "securestring",
+              "required": false
+            },
+            "useIbmRequestHeaderFormat": {
+              "type": "bool",
+              "required": false
+            }
+          }
+        },
+        "HttpLink": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "aliasTransactionId": {
+              "type": "string",
+              "required": false
+            },
+            "allowRedirects": {
+              "type": "bool",
+              "required": false
+            },
+            "userAgent": {
+              "type": "string",
+              "required": false
+            },
+            "mirrorProgram": {
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        "HttpUserData": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "aliasTransactionId": {
+              "type": "string",
+              "required": false
+            },
+            "allowRedirects": {
+              "type": "bool",
+              "required": false
+            },
+            "userAgent": {
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        "TrmLink": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "certificateCommonName": {
+              "type": "string",
+              "required": false
+            },
+            "clientCertificateThumbprint": {
+              "type": "securestring",
+              "required": false
+            },
+            "useIbmRequestHeaderFormat": {
+              "type": "bool",
+              "required": false
+            }
+          }
+        },
+        "TrmUserData": {
+          "parameters": {
+            "codePage": {
+              "type": "int",
+              "required": false
+            },
+            "password": {
+              "type": "securestring",
+              "required": false
+            },
+            "portNumber": {
+              "type": "int",
+              "required": true
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "timeout": {
+              "type": "int",
+              "required": false
+            },
+            "userName": {
+              "type": "securestring",
+              "required": false
+            },
+            "useTls": {
+              "type": "bool",
+              "required": false
+            },
+            "validateServerCertificate": {
+              "type": "bool",
+              "required": false
+            },
+            "certificateCommonName": {
+              "type": "string",
+              "required": false
+            },
+            "clientCertificateThumbprint": {
+              "type": "securestring",
+              "required": false
+            },
+            "useIbmRequestHeaderFormat": {
+              "type": "bool",
+              "required": false
+            }
+          }
+        }
+      },
       "actions": {
         "executeMethod": {
           "summary": "Call a CICS program",
@@ -1777,6 +2996,37 @@
     "confluentKafka": {
       "serviceProviderId": "/serviceProviders/confluentKafka",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "brokerList": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "securestring",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": true
+        },
+        "compressionType": {
+          "type": "string",
+          "required": false
+        },
+        "schemaRegistryUrl": {
+          "type": "string",
+          "required": false
+        },
+        "schemaRegistryUsername": {
+          "type": "string",
+          "required": false
+        },
+        "schemaRegistryPassword": {
+          "type": "securestring",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "SendMessage": {
           "summary": "Send messages to Kafka topic",
@@ -1806,6 +3056,11 @@
               "name": "SchemaSubjectName",
               "type": "string",
               "description": "The schema subject name for message."
+            },
+            {
+              "name": "rawStringContent",
+              "type": "boolean",
+              "description": "(Optional) When true, string message values are sent as raw UTF-8 bytes instead of being JSON-serialized (which surrounds the value with quotes and escapes special characters). Use this for non-JSON payloads such as XML where the consumer expects exact bytes on the wire."
             }
           ],
           "required": [
@@ -1861,291 +3116,56 @@
         }
       }
     },
-    "AzureCosmosDB": {
-      "serviceProviderId": "/serviceProviders/AzureCosmosDB",
-      "connectionStringSetting": "AzureCosmosDB_connectionString",
-      "actions": {
-        "BulkCreateOrUpdateDocument": {
-          "summary": "Create or update many items in bulk",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "items",
-              "type": "object",
-              "description": "The items to be created or updated."
-            },
-            {
-              "name": "isUpsert",
-              "type": "boolean",
-              "description": "If true, the item will be replaced if exists, else it will be created."
-            }
-          ],
-          "required": [
-            "databaseId",
-            "containerId",
-            "items"
-          ]
-        },
-        "CreateOrUpdateDocument": {
-          "summary": "Create or update item",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "item",
-              "type": "string",
-              "description": "The item to be created or updated."
-            },
-            {
-              "name": "partitionKey",
-              "type": "string",
-              "description": "The partition key for the request."
-            },
-            {
-              "name": "isUpsert",
-              "type": "boolean",
-              "description": "If true, the item will be replaced if exists, else it will be created."
-            },
-            {
-              "name": "sessionToken",
-              "type": "string",
-              "description": "The session token associated with the read/write operation to maintain session consistency."
-            },
-            {
-              "name": "etag",
-              "type": "string",
-              "description": "The entity tag associated with the item."
-            }
-          ],
-          "required": [
-            "containerId",
-            "databaseId",
-            "item"
-          ]
-        },
-        "DeleteDocument": {
-          "summary": "Delete an item",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "itemId",
-              "type": "string",
-              "description": "The Id value of the requested item."
-            },
-            {
-              "name": "partitionKey",
-              "type": "string",
-              "description": "The partition key for the request."
-            },
-            {
-              "name": "sessionToken",
-              "type": "string",
-              "description": "The session token associated with the read/write operation to maintain session consistency."
-            }
-          ],
-          "required": [
-            "databaseId",
-            "containerId",
-            "itemId",
-            "partitionKey"
-          ]
-        },
-        "QueryDocuments": {
-          "summary": "Query items",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "queryText",
-              "type": "string",
-              "description": "The Azure Cosmos DB SQL query text."
-            },
-            {
-              "name": "partitionKey",
-              "type": "string",
-              "description": "The partition key for the request."
-            },
-            {
-              "name": "continuationToken",
-              "type": "string",
-              "description": "The continuation token for this query given by the Azure Cosmos DB service, if any."
-            },
-            {
-              "name": "maxItemCount",
-              "type": "string",
-              "description": "The maximum number of items to be returned by the query."
-            },
-            {
-              "name": "sessionToken",
-              "type": "string",
-              "description": "The session token associated with the read/write operation to maintain session consistency."
-            }
-          ],
-          "required": [
-            "databaseId",
-            "containerId",
-            "queryText"
-          ]
-        },
-        "ReadDocument": {
-          "summary": "Read an item",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "itemId",
-              "type": "string",
-              "description": "The Id value of the requested item."
-            },
-            {
-              "name": "partitionKey",
-              "type": "string",
-              "description": "The partition key for the request."
-            },
-            {
-              "name": "sessionToken",
-              "type": "string",
-              "description": "The session token associated with the read/write operation to maintain session consistency."
-            }
-          ],
-          "required": [
-            "databaseId",
-            "containerId",
-            "itemId",
-            "partitionKey"
-          ]
-        },
-        "PatchItem": {
-          "summary": "Patch an item",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseId",
-              "type": "string",
-              "description": "The name of the database."
-            },
-            {
-              "name": "containerId",
-              "type": "string",
-              "description": "The name of the container."
-            },
-            {
-              "name": "itemId",
-              "type": "string",
-              "description": "The Id value of the requested item."
-            },
-            {
-              "name": "partitionKey",
-              "type": "string",
-              "description": "The partition key for the request."
-            },
-            {
-              "name": "sessionToken",
-              "type": "string",
-              "description": "The session token associated with the read/write operation to maintain session consistency."
-            },
-            {
-              "name": "patchOperations",
-              "type": "array"
-            }
-          ],
-          "required": [
-            "databaseId",
-            "containerId",
-            "itemId",
-            "partitionKey",
-            "patchOperations"
-          ]
-        }
-      },
-      "triggers": {
-        "whenADocumentIsCreatedOrModified": {
-          "summary": "When an item is created or modified",
-          "operationType": "ServiceProvider",
-          "parameters": [
-            {
-              "name": "databaseName",
-              "type": "string",
-              "description": "The name of the database with the monitored and lease containers."
-            },
-            {
-              "name": "collectionName",
-              "type": "string",
-              "description": "The name of the container being monitored."
-            },
-            {
-              "name": "leaseCollectionName",
-              "type": "string",
-              "description": "The name of the container used to store leases."
-            },
-            {
-              "name": "createLeaseCollectionIfNotExists",
-              "type": "boolean",
-              "description": "If true, the lease container is created when it doesn’t already exist."
-            },
-            {
-              "name": "leasesCollectionThroughput",
-              "type": "integer",
-              "description": "The number of Request Units to assign when the lease container is created."
-            }
-          ],
-          "required": [
-            "databaseName",
-            "collectionName"
-          ]
-        }
-      }
-    },
     "DB2": {
       "serviceProviderId": "/serviceProviders/DB2",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverName": {
+          "type": "string",
+          "required": false
+        },
+        "portNumber": {
+          "type": "int",
+          "required": false
+        },
+        "database": {
+          "type": "string",
+          "required": false
+        },
+        "userName": {
+          "type": "string",
+          "required": false
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "packageCollection": {
+          "type": "string",
+          "required": false
+        },
+        "defaultSchema": {
+          "type": "string",
+          "required": false
+        },
+        "hostCCSID": {
+          "type": "int",
+          "required": false
+        },
+        "pcCodePage": {
+          "type": "int",
+          "required": false
+        },
+        "additionalValues": {
+          "type": "int",
+          "required": false
+        },
+        "connectionString": {
+          "type": "securestring",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "deleteRow": {
           "summary": "Delete row",
@@ -2288,6 +3308,119 @@
     "documentIntelligence": {
       "serviceProviderId": "/serviceProviders/documentIntelligence",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "KeyAndEndpointConnection": {
+          "parameters": {
+            "documentIntelligenceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "documentIntelligenceKey": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "documentIntelligenceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "documentIntelligenceEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "analyzeDocument": {
           "summary": "Analyze document",
@@ -2344,6 +3477,119 @@
     "eventGridPublisher": {
       "serviceProviderId": "/serviceProviders/eventGridPublisher",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "accessKey": {
+          "parameters": {
+            "topicEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "accessKey": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "topicEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "topicEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "publishEvents": {
           "summary": "Publish Events",
@@ -2365,6 +3611,115 @@
     "eventHub": {
       "serviceProviderId": "/serviceProviders/eventHub",
       "connectionStringSetting": "eventHub_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "fullyQualifiedNamespace": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "fullyQualifiedNamespace": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "sendEvent": {
           "summary": "Send Event",
@@ -2481,6 +3836,25 @@
     "FileSystem": {
       "serviceProviderId": "/serviceProviders/FileSystem",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "rootFolder": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": true
+        },
+        "mountPath": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "appendFile": {
           "summary": "Append file",
@@ -2766,6 +4140,41 @@
     "Ftp": {
       "serviceProviderId": "/serviceProviders/Ftp",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverAddress": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": true
+        },
+        "portNumber": {
+          "type": "int",
+          "required": false
+        },
+        "enableSsl": {
+          "type": "bool",
+          "required": false
+        },
+        "disableCertificateValidation": {
+          "type": "bool",
+          "required": false
+        },
+        "enableBinaryMode": {
+          "type": "bool",
+          "required": false
+        },
+        "disableConnectionCache": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "getFtpFileContent": {
           "summary": "Get file content",
@@ -2959,6 +4368,17 @@
     "hostfile": {
       "serviceProviderId": "/serviceProviders/hostfile",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "codePage": {
+          "type": "int",
+          "required": false
+        },
+        "isISeries": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "generateFileContents": {
           "summary": "Generate Host File Contents",
@@ -3018,6 +4438,49 @@
     "ibmiProgramCall": {
       "serviceProviderId": "/serviceProviders/ibmiProgramCall",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "certificateCommonName": {
+          "type": "string",
+          "required": false
+        },
+        "clientCertificateThumbprint": {
+          "type": "securestring",
+          "required": false
+        },
+        "codePage": {
+          "type": "int",
+          "required": false
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "portNumber": {
+          "type": "int",
+          "required": true
+        },
+        "serverName": {
+          "type": "string",
+          "required": true
+        },
+        "timeout": {
+          "type": "int",
+          "required": false
+        },
+        "userName": {
+          "type": "securestring",
+          "required": false
+        },
+        "useTls": {
+          "type": "bool",
+          "required": false
+        },
+        "validateServerCertificate": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "executeMethod": {
           "summary": "Call an IBM i program",
@@ -3051,6 +4514,65 @@
     "imsProgramCall": {
       "serviceProviderId": "/serviceProviders/imsProgramCall",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "imsSystemId": {
+          "type": "string",
+          "required": true
+        },
+        "itocExitName": {
+          "type": "string",
+          "required": false
+        },
+        "mfsModName": {
+          "type": "string",
+          "required": false
+        },
+        "useHwso1SecurityExit": {
+          "type": "bool",
+          "required": false
+        },
+        "certificateCommonName": {
+          "type": "string",
+          "required": false
+        },
+        "clientCertificateThumbprint": {
+          "type": "securestring",
+          "required": false
+        },
+        "codePage": {
+          "type": "int",
+          "required": false
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "portNumber": {
+          "type": "int",
+          "required": true
+        },
+        "serverName": {
+          "type": "string",
+          "required": true
+        },
+        "timeout": {
+          "type": "int",
+          "required": false
+        },
+        "userName": {
+          "type": "securestring",
+          "required": false
+        },
+        "useTls": {
+          "type": "bool",
+          "required": false
+        },
+        "validateServerCertificate": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "executeMethod": {
           "summary": "Call an IMS program",
@@ -3084,6 +4606,21 @@
     "Jdbc": {
       "serviceProviderId": "/serviceProviders/Jdbc",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "url": {
+          "type": "string",
+          "required": true
+        },
+        "userId": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": true
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "getTables": {
           "summary": "Get tables",
@@ -3130,6 +4667,107 @@
     "keyVault": {
       "serviceProviderId": "/serviceProviders/keyVault",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "VaultUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "VaultUri": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "getSecret": {
           "summary": "Get secret",
@@ -3415,6 +5053,65 @@
     "mq": {
       "serviceProviderId": "/serviceProviders/mq",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverName": {
+          "type": "string",
+          "required": true
+        },
+        "portNumber": {
+          "type": "int",
+          "required": true
+        },
+        "channelName": {
+          "type": "string",
+          "required": true
+        },
+        "queueManagerName": {
+          "type": "string",
+          "required": true
+        },
+        "connectAs": {
+          "type": "string",
+          "required": true
+        },
+        "deadLetterQueueName": {
+          "type": "string",
+          "required": false
+        },
+        "backupServerName": {
+          "type": "string",
+          "required": false
+        },
+        "backupServerPortNumber": {
+          "type": "int",
+          "required": false
+        },
+        "userName": {
+          "type": "string",
+          "required": false
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "maxConnections": {
+          "type": "int",
+          "required": false
+        },
+        "connectionTimeoutSeconds": {
+          "type": "int",
+          "required": false
+        },
+        "useTLS": {
+          "type": "bool",
+          "required": false
+        },
+        "clientCertThumbprint": {
+          "type": "securestring",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "browseMessage": {
           "summary": "Browse message",
@@ -3732,9 +5429,190 @@
         }
       }
     },
+    "msmq": {
+      "serviceProviderId": "/serviceProviders/msmq",
+      "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverName": {
+          "type": "string",
+          "required": true
+        },
+        "port": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
+      "actions": {
+        "sendMsmqMessage": {
+          "summary": "Send message to MSMQ queue",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "queueName",
+              "type": "string",
+              "description": "The MSMQ queue path (e.g., .\\Private$\\MyQueue)."
+            },
+            {
+              "name": "messageLabel",
+              "type": "string",
+              "description": "Optional label for the message."
+            },
+            {
+              "name": "messageBody",
+              "type": "string",
+              "description": "The content of the message to send. The body is serialized using XmlMessageFormatter."
+            },
+            {
+              "name": "isTransactional",
+              "type": "boolean",
+              "description": "Set to true if the target queue is transactional. Using the wrong value causes silent message loss."
+            },
+            {
+              "name": "useDeadLetterQueue",
+              "type": "boolean",
+              "description": "Route undelivered messages to the dead-letter queue. Defaults to true."
+            }
+          ],
+          "required": [
+            "queueName",
+            "messageBody"
+          ]
+        }
+      },
+      "triggers": {
+        "whenMessageIsAvailableInMsmqQueue": {
+          "summary": "When a message is available in a queue",
+          "operationType": "ServiceProvider",
+          "parameters": [
+            {
+              "name": "queueName",
+              "type": "string",
+              "description": "The name of the MSMQ queue to monitor for new messages. Use either the queue name (e.g., 'my-queue') or private format (e.g., '.\\private$\\my-queue'). Format names such as 'FormatName:DIRECT=...' are not supported."
+            }
+          ],
+          "required": [
+            "queueName"
+          ]
+        }
+      }
+    },
     "openai": {
       "serviceProviderId": "/serviceProviders/openai",
       "connectionStringSetting": null,
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "KeyAndEndpointConnection": {
+          "parameters": {
+            "openAIEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "openAIKey": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "openAIEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "openAIEndpoint": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "getArrayEmbeddings": {
           "summary": "Get multiple embeddings",
@@ -3970,6 +5848,21 @@
     "oracledb": {
       "serviceProviderId": "/serviceProviders/oracledb",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverAddress": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": true
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "getTables": {
           "summary": "Get tables",
@@ -4085,6 +5978,13 @@
     "rabbitmq": {
       "serviceProviderId": "/serviceProviders/rabbitmq",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "connectionString": {
+          "type": "securestring",
+          "required": true
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "sendRabbitMQMessage": {
           "summary": "Send a message",
@@ -4224,6 +6124,161 @@
     "sap": {
       "serviceProviderId": "/serviceProviders/sap",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "client": {
+          "type": "int",
+          "required": true
+        },
+        "authenticationType": {
+          "type": "string",
+          "required": true
+        },
+        "userName": {
+          "type": "string",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Basic"
+          }
+        },
+        "password": {
+          "type": "securestring",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Basic"
+          }
+        },
+        "sncMyName": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Snc"
+          }
+        },
+        "sncPartnerName": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Snc"
+          }
+        },
+        "sncQop": {
+          "type": "string",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Snc"
+          }
+        },
+        "sncSso": {
+          "type": "string",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "AuthenticationType",
+            "value": "Snc"
+          }
+        },
+        "sncDistinguishingUser": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "SncSso",
+            "value": "On"
+          }
+        },
+        "sncUserName": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "SncSso",
+            "value": "Off"
+          }
+        },
+        "sncPassword": {
+          "type": "securestring",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "SncSso",
+            "value": "Off"
+          }
+        },
+        "sncCertificate": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "SncSso",
+            "value": "On"
+          }
+        },
+        "logonType": {
+          "type": "string",
+          "required": true
+        },
+        "applicationServerHost": {
+          "type": "string",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "ApplicationServer"
+          }
+        },
+        "applicationServerService": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "ApplicationServer"
+          }
+        },
+        "applicationServerSystemNumber": {
+          "type": "int",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "ApplicationServer"
+          }
+        },
+        "messageServerHost": {
+          "type": "string",
+          "required": true,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "MessageServer"
+          }
+        },
+        "messageServerPort": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "MessageServer"
+          }
+        },
+        "messageServerSystemId": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "MessageServer"
+          }
+        },
+        "messageServerLogonGroup": {
+          "type": "string",
+          "required": false,
+          "dependentParameter": {
+            "parameter": "LogonType",
+            "value": "MessageServer"
+          }
+        },
+        "language": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "callRfc": {
           "summary": "[RFC] Call function in SAP",
@@ -4790,6 +6845,115 @@
     "serviceBus": {
       "serviceProviderId": "/serviceProviders/serviceBus",
       "connectionStringSetting": "serviceBus_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "fullyQualifiedNamespace": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "fullyQualifiedNamespace": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "sendMessage": {
           "summary": "Send message",
@@ -5812,6 +7976,45 @@
     "Sftp": {
       "serviceProviderId": "/serviceProviders/Sftp",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "sshHostAddress": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "portNumber": {
+          "type": "int",
+          "required": false
+        },
+        "rootDirectory": {
+          "type": "string",
+          "required": false
+        },
+        "sshPrivateKey": {
+          "type": "string",
+          "required": false
+        },
+        "sshPrivateKeyPassphrase": {
+          "type": "securestring",
+          "required": false
+        },
+        "sshHostKeyFingerprint": {
+          "type": "string",
+          "required": false
+        },
+        "disableConnectionCache": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "getFileContent": {
           "summary": "Get file content",
@@ -6114,6 +8317,45 @@
     "si3270": {
       "serviceProviderId": "/serviceProviders/si3270",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "codePage": {
+          "type": "int",
+          "required": false
+        },
+        "deviceType": {
+          "type": "string",
+          "required": false
+        },
+        "logExceptionScreens": {
+          "type": "bool",
+          "required": false
+        },
+        "logicalUnitName": {
+          "type": "string",
+          "required": false
+        },
+        "portNumber": {
+          "type": "int",
+          "required": false
+        },
+        "serverName": {
+          "type": "string",
+          "required": true
+        },
+        "timeout": {
+          "type": "int",
+          "required": false
+        },
+        "useTls": {
+          "type": "bool",
+          "required": false
+        },
+        "validateServerCertificate": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "executeMethod": {
           "summary": "Execute a navigation plan",
@@ -6147,6 +8389,29 @@
     "Smtp": {
       "serviceProviderId": "/serviceProviders/Smtp",
       "connectionStringSetting": null,
+      "connectionParameters": {
+        "serverAddress": {
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "required": false
+        },
+        "password": {
+          "type": "securestring",
+          "required": false
+        },
+        "port": {
+          "type": "int",
+          "required": false
+        },
+        "enableSSL": {
+          "type": "bool",
+          "required": false
+        }
+      },
+      "connectionParameterSets": {},
       "actions": {
         "sendEmail": {
           "summary": "Send Email",
@@ -6219,6 +8484,135 @@
     "sql": {
       "serviceProviderId": "/serviceProviders/sql",
       "connectionStringSetting": "sql_connectionString",
+      "connectionParameters": {},
+      "connectionParameterSets": {
+        "connectionString": {
+          "parameters": {
+            "connectionString": {
+              "type": "securestring",
+              "required": true
+            }
+          }
+        },
+        "ActiveDirectoryOAuth": {
+          "parameters": {
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "databaseName": {
+              "type": "string",
+              "required": true
+            },
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Authority": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Tenant": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "CredentialType": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "ClientId": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "Secret": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Secret"
+              }
+            },
+            "Pfx": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            },
+            "Password": {
+              "type": "securestring",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ],
+              "dependentParameter": {
+                "parameter": "CredentialType",
+                "value": "Certificate"
+              }
+            }
+          }
+        },
+        "ManagedServiceIdentity": {
+          "parameters": {
+            "Type": {
+              "type": "string",
+              "required": true,
+              "propertyPath": [
+                "authProvider"
+              ]
+            },
+            "managedIdentityType": {
+              "type": "string",
+              "required": false
+            },
+            "managedIdentityClientId": {
+              "type": "string",
+              "required": true,
+              "dependentParameter": {
+                "parameter": "managedIdentityType",
+                "value": "UserAssigned"
+              }
+            },
+            "serverName": {
+              "type": "string",
+              "required": true
+            },
+            "databaseName": {
+              "type": "string",
+              "required": true
+            },
+            "Identity": {
+              "type": "string",
+              "required": false,
+              "propertyPath": [
+                "authProvider"
+              ]
+            }
+          }
+        }
+      },
       "actions": {
         "executeQuery": {
           "summary": "Execute query",
