@@ -51,6 +51,14 @@ public sealed class FuncHostFixture : IAsyncDisposable
             }
         }
 
+        foreach (var existingKey in psi.Environment.Keys.ToList())
+        {
+            if (string.Equals(existingKey, "WORKFLOWS_AUTHENTICATION_METHOD", StringComparison.OrdinalIgnoreCase))
+            {
+                psi.Environment.Remove(existingKey);
+            }
+        }
+
         if (envOverrides is not null)
         {
             foreach (var kv in envOverrides)

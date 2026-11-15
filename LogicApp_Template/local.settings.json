@@ -6,10 +6,22 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "APP_KIND": "workflowapp",
     
+    "serviceBus_fullyQualifiedNamespace": "YOUR_NAMESPACE.servicebus.windows.net",
+    "AzureBlob_blobStorageEndpoint": "https://YOUR_STORAGE_ACCOUNT.blob.core.windows.net",
+    "azureTables_tableStorageEndpoint": "https://YOUR_STORAGE_ACCOUNT.table.core.windows.net",
+    "azurequeues_queueServiceUri": "https://YOUR_STORAGE_ACCOUNT.queue.core.windows.net",
+    "AzureFile_storageAccountUri": "https://YOUR_STORAGE_ACCOUNT.file.core.windows.net",
+    "eventHub_fullyQualifiedNamespace": "YOUR_EVENTHUB_NAMESPACE.servicebus.windows.net",
+    "eventGridPublisher_topicEndpoint": "https://YOUR_TOPIC.REGION-1.eventgrid.azure.net/api/events",
+    "sql_serverName": "YOUR_SQL_SERVER.database.windows.net",
+    "sql_databaseName": "YOUR_SQL_DATABASE",
+
     "serviceBus_connectionString": "YOUR_SERVICE_BUS_CONNECTION_STRING",
     "AzureBlob_connectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
     "azureTables_connectionString": "YOUR_TABLE_STORAGE_CONNECTION_STRING",
     "azurequeues_connectionString": "YOUR_QUEUE_STORAGE_CONNECTION_STRING",
+    "AzureFile_connectionString": "YOUR_FILE_STORAGE_CONNECTION_STRING",
+    "eventHub_connectionString": "YOUR_EVENTHUB_CONNECTION_STRING",
     "sql_connectionString": "YOUR_SQL_CONNECTION_STRING",
 
     "sftp_sshHostAddress": "127.0.0.1",

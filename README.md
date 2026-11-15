@@ -22,7 +22,7 @@ Reference workspace, connector catalogs, custom-code project template, and Reqnr
 
 ### Azure Functions Core Tools v4
 
-Install Azure Functions Core Tools v4 (`func --version` starting with `4.`), or use the bundled Core Tools installed by the VS Code Azure Logic Apps (Standard) extension under `%USERPROFILE%\.azurelogicapps\dependencies\FuncCoreTools`.
+Install Azure Functions Core Tools v4 (`func --version` starting with 4.), or use the bundled Core Tools installed by the VS Code Azure Logic Apps (Standard) extension under `%USERPROFILE%\.azurelogicapps\dependencies\FuncCoreTools`.
 
 ### Docker Desktop (Windows WSL2 backend)
 
@@ -40,6 +40,8 @@ Integration and E2E suites run Azurite (`mcr.microsoft.com/azure-storage/azurite
 
 ## Local test execution rules
 
-1. **Run SDK unit tests sequentially (port 7071 contention):** Projects using `Microsoft.Azure.Workflows.WebJobs.Tests.Extension` (`UnitTestExecutor`) start a local Functions host on fixed TCP port `7071`. Never run two `UnitTestExecutor` test suites in parallel on the same machine, and verify no orphaned `func` or `testhost` process is listening on port `7071` before running unit tests.
-2. **Configuration file restoration (`local.settings.json`, `connections.json`, `parameters.json`):** `TestRunHooks` snapshots all three files before starting `func host` and restores them (UTF-8 without BOM) in `[AfterTestRun]` and on startup failure. If a test runner process is forcefully terminated (`kill -9` / Task Manager) before `[AfterTestRun]` runs, restore `LogicApp/local.settings.json`, `LogicApp/connections.json`, and `LogicApp/parameters.json` from Git or your local backup before opening the VS Code workflow designer.
-3. **Opt-in SQL and FTP fixtures:** Copy `OptionalFixtures/SqlServerFixture.cs` into `Infrastructure/` (and add `<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />` to the test `.csproj`) only when testing workflows that use `/serviceProviders/sql`. Copy `OptionalFixtures/FtpEmulatorFixture.cs` into `Infrastructure/` when testing `/serviceProviders/Ftp` workflows; assert workflow action retry counts via `LogicAppTrigger.GetLatestActionRepetitionCountAsync` rather than counting raw FTP protocol commands.
+1. **Run SDK unit tests sequentially (port 7071 contention):** Projects using `Microsoft.Azure.Workflows.WebJobs.Tests.Extension` (`UnitTestExecutor`) start a local Functions host on fixed TCP port 7071. Never run two `UnitTestExecutor` test suites in parallel on the same machine, and verify no orphaned `func` or `testhost` process is listening on port 7071 before running unit tests.
+2. **Default Managed Identity connections and emulator patching:** `LogicApp_Template/connections.json` defaults Entra-capable Azure connectors to `ManagedServiceIdentity`. In `[BeforeTestRun]`, `TestRunHooks.PatchForEmulators` swaps those entries to local emulator shapes, preserves retained non-Entra `connectionString` entries, and strips `WORKFLOWS_AUTHENTICATION_METHOD`.
+3. **Configuration file restoration:** `[AfterTestRun]` and startup-failure handlers restore `local.settings.json`, `workflow-designtime/local.settings.json`, `connections.json`, and `parameters.json` as UTF-8 without BOM. After a forced process kill, restore those files from Git before opening the VS Code designer.
+4. **Interactive VS Code developer identity:** To run locally against Azure dev resources with signed-in user credentials, set `WORKFLOWS_AUTHENTICATION_METHOD` to `managedServiceIdentity` in both `local.settings.json` files.
+5. **Opt-in SQL and FTP fixtures:** Copy `OptionalFixtures/SqlServerFixture.cs` or `OptionalFixtures/FtpEmulatorFixture.cs` into `Infrastructure/` only when workflows use SQL or FTP connectors. Assert FTP retry counts via `LogicAppTrigger.GetLatestActionRepetitionCountAsync` rather than raw protocol command counts.

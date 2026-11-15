@@ -2,9 +2,12 @@
   "serviceProviderConnections": {
     "serviceBus": {
       "parameterValues": {
-        "connectionString": "@appsetting('serviceBus_connectionString')"
+        "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
       },
-      "parameterSetName": "connectionString",
+      "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
         "id": "/serviceProviders/serviceBus"
       },
@@ -12,9 +15,13 @@
     },
     "AzureBlob": {
       "parameterValues": {
-        "connectionString": "@appsetting('AzureBlob_connectionString')"
+        "managedIdentityType": "SystemAssigned",
+        "blobStorageEndpoint": "@appsetting('AzureBlob_blobStorageEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
       },
-      "parameterSetName": "connectionString",
+      "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
         "id": "/serviceProviders/AzureBlob"
       },
@@ -22,9 +29,12 @@
     },
     "azureTables": {
       "parameterValues": {
-        "connectionString": "@appsetting('azureTables_connectionString')"
+        "tableStorageEndpoint": "@appsetting('azureTables_tableStorageEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
       },
-      "parameterSetName": "connectionString",
+      "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
         "id": "/serviceProviders/azureTables"
       },
@@ -32,13 +42,55 @@
     },
     "azurequeues": {
       "parameterValues": {
-        "connectionString": "@appsetting('azurequeues_connectionString')"
+        "queueServiceUri": "@appsetting('azurequeues_queueServiceUri')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
       },
-      "parameterSetName": "connectionString",
+      "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
         "id": "/serviceProviders/azurequeues"
       },
       "displayName": "AzureQueues_Connection"
+    },
+    "AzureFile": {
+      "parameterValues": {
+        "storageAccountUri": "@appsetting('AzureFile_storageAccountUri')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureFile"
+      },
+      "displayName": "AzureFile_Connection"
+    },
+    "eventHub": {
+      "parameterValues": {
+        "fullyQualifiedNamespace": "@appsetting('eventHub_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/eventHub"
+      },
+      "displayName": "EventHub_Connection"
+    },
+    "eventGridPublisher": {
+      "parameterValues": {
+        "topicEndpoint": "@appsetting('eventGridPublisher_topicEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/eventGridPublisher"
+      },
+      "displayName": "EventGridPublisher_Connection"
     },
     "sftp": {
       "parameterValues": {
@@ -66,9 +118,14 @@
     },
     "sql": {
       "parameterValues": {
-        "connectionString": "@appsetting('sql_connectionString')"
+        "managedIdentityType": "SystemAssigned",
+        "serverName": "@appsetting('sql_serverName')",
+        "databaseName": "@appsetting('sql_databaseName')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
       },
-      "parameterSetName": "connectionString",
+      "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
         "id": "/serviceProviders/sql"
       },

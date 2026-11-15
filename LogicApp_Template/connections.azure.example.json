@@ -1,19 +1,6 @@
 {
-  "$comment": "Reference ManagedServiceIdentity connection shapes verified against ExtensionBundle.Workflows 1.194.31 runtime manifests. Copy the required blocks into connections.json when deploying to Azure; keep connectionString shapes in local/connections.emulator.json for local emulator runs.",
+  "$comment": "Reference connection shapes verified against ExtensionBundle.Workflows 1.194.31 runtime manifests. SystemAssigned ManagedServiceIdentity is the committed default in connections.json for Entra-capable Azure connectors; TestRunHooks.cs swaps MSI entries to emulator connectionString/accessKey shapes during local test runs. Use the shapes below for optional UserAssigned MI, Key Vault, Cosmos DB, or retained non-Entra SQL Server authentication.",
   "serviceProviderConnections": {
-    "serviceBus": {
-      "parameterValues": {
-        "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
-        "authProvider": {
-          "Type": "ManagedServiceIdentity"
-        }
-      },
-      "parameterSetName": "ManagedServiceIdentity",
-      "serviceProvider": {
-        "id": "/serviceProviders/serviceBus"
-      },
-      "displayName": "ServiceBus_MSI_SystemAssigned"
-    },
     "serviceBus_userAssigned": {
       "parameterValues": {
         "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
@@ -27,20 +14,6 @@
         "id": "/serviceProviders/serviceBus"
       },
       "displayName": "ServiceBus_MSI_UserAssigned"
-    },
-    "AzureBlob": {
-      "parameterValues": {
-        "managedIdentityType": "SystemAssigned",
-        "blobStorageEndpoint": "@appsetting('AzureBlob_blobStorageEndpoint')",
-        "authProvider": {
-          "Type": "ManagedServiceIdentity"
-        }
-      },
-      "parameterSetName": "ManagedServiceIdentity",
-      "serviceProvider": {
-        "id": "/serviceProviders/AzureBlob"
-      },
-      "displayName": "AzureBlob_MSI_SystemAssigned"
     },
     "AzureBlob_userAssigned": {
       "parameterValues": {
@@ -57,20 +30,102 @@
       },
       "displayName": "AzureBlob_MSI_UserAssigned"
     },
-    "sql": {
+    "azureTables_userAssigned": {
       "parameterValues": {
-        "managedIdentityType": "SystemAssigned",
-        "serverName": "@appsetting('sql_serverName')",
-        "databaseName": "@appsetting('sql_databaseName')",
+        "tableStorageEndpoint": "@appsetting('azureTables_tableStorageEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/azureTables"
+      },
+      "displayName": "AzureTables_MSI_UserAssigned"
+    },
+    "azurequeues_userAssigned": {
+      "parameterValues": {
+        "queueServiceUri": "@appsetting('azurequeues_queueServiceUri')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/azurequeues"
+      },
+      "displayName": "AzureQueues_MSI_UserAssigned"
+    },
+    "AzureFile_userAssigned": {
+      "parameterValues": {
+        "storageAccountUri": "@appsetting('AzureFile_storageAccountUri')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureFile"
+      },
+      "displayName": "AzureFile_MSI_UserAssigned"
+    },
+    "eventHub_userAssigned": {
+      "parameterValues": {
+        "fullyQualifiedNamespace": "@appsetting('eventHub_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/eventHub"
+      },
+      "displayName": "EventHub_MSI_UserAssigned"
+    },
+    "eventGridPublisher_userAssigned": {
+      "parameterValues": {
+        "topicEndpoint": "@appsetting('eventGridPublisher_topicEndpoint')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity",
+          "Identity": "@appsetting('WORKFLOWS_USER_ASSIGNED_IDENTITY_RESOURCE_ID')"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/eventGridPublisher"
+      },
+      "displayName": "EventGridPublisher_MSI_UserAssigned"
+    },
+    "keyVault": {
+      "parameterValues": {
+        "VaultUri": "@appsetting('keyVault_VaultUri')",
         "authProvider": {
           "Type": "ManagedServiceIdentity"
         }
       },
       "parameterSetName": "ManagedServiceIdentity",
       "serviceProvider": {
-        "id": "/serviceProviders/sql"
+        "id": "/serviceProviders/keyVault"
       },
-      "displayName": "Sql_MSI_SystemAssigned"
+      "displayName": "KeyVault_MSI_SystemAssigned"
+    },
+    "AzureCosmosDB": {
+      "parameterValues": {
+        "managedIdentityType": "SystemAssigned",
+        "accountURI": "@appsetting('AzureCosmosDB_accountURI')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureCosmosDB"
+      },
+      "displayName": "AzureCosmosDB_MSI_SystemAssigned"
     },
     "sql_userAssigned": {
       "parameterValues": {
@@ -88,6 +143,16 @@
         "id": "/serviceProviders/sql"
       },
       "displayName": "Sql_MSI_UserAssigned"
+    },
+    "sql_retainedSqlAuth": {
+      "parameterValues": {
+        "connectionString": "@appsetting('sql_connectionString')"
+      },
+      "parameterSetName": "connectionString",
+      "serviceProvider": {
+        "id": "/serviceProviders/sql"
+      },
+      "displayName": "Sql_RetainedSqlAuth_KeyVault"
     }
   },
   "managedApiConnections": {}

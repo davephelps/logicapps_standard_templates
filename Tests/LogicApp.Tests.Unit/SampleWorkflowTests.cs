@@ -52,5 +52,37 @@ namespace LogicApp.Tests.Unit
             Assert.AreEqual(200, r.GetProperty("inputs").GetProperty("statusCode").GetInt32());
             WorkflowAssert.RunsAfter(_definition, "Return_Response", "Publish_To_Service_Bus", "SUCCEEDED");
         }
+
+        [TestMethod]
+        public void TemplateConnectionsDefaultEntraConnectorsToManagedServiceIdentity()
+        {
+            var connections = WorkflowFiles.LoadConnections();
+            var spc = connections.GetProperty("serviceProviderConnections");
+
+            var expectedMsiConnectors = new[]
+            {
+                "serviceBus",
+                "AzureBlob",
+                "azureTables",
+                "azurequeues",
+                "AzureFile",
+                "eventHub",
+                "eventGridPublisher",
+                "sql"
+            };
+
+            foreach (var name in expectedMsiConnectors)
+            {
+                Assert.IsTrue(spc.TryGetProperty(name, out var conn), $"Missing expected template connection '{name}'");
+                Assert.AreEqual("ManagedServiceIdentity", conn.GetProperty("parameterSetName").GetString(),
+                    $"Connection '{name}' must default to parameterSetName=ManagedServiceIdentity");
+                Assert.AreEqual("ManagedServiceIdentity",
+                    conn.GetProperty("parameterValues").GetProperty("authProvider").GetProperty("Type").GetString(),
+                    $"Connection '{name}' must set authProvider.Type=ManagedServiceIdentity");
+            }
+
+            Assert.IsTrue(spc.TryGetProperty("sftp", out _), "Non-Entra sftp connection must remain present");
+            Assert.IsTrue(spc.TryGetProperty("ftp", out _), "Non-Entra ftp connection must remain present");
+        }
     }
 }
