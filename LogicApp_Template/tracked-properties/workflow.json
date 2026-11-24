@@ -10,11 +10,11 @@
                     "customerName": "@triggerBody()?['customerName']"
                 },
                 "trackedProperties": {
-                    "orderId": "@action().outputs?.orderId",
-                    "customerName": "@action().outputs?.customerName"
+                    "orderId": "@action()?['outputs']?['orderId']",
+                    "customerName": "@action()?['outputs']?['customerName']"
                 },
                 "runAfter": {},
-                "description": "For trigger payload tracking, create a Compose action and add trackedProperties referencing @action().outputs"
+                "description": "For trigger payload tracking, create a Compose action and add trackedProperties referencing @action()?['outputs']"
             },
             "Call_External_API": {
                 "type": "Http",
@@ -33,15 +33,15 @@
                 },
                 "trackedProperties": {
                     "requestOrderId": "@action().inputs?.body?.orderId",
-                    "responseStatus": "@action().outputs?.statusCode",
-                    "responseId": "@action().outputs?.body?.transactionId"
+                    "responseStatus": "@action()?['outputs']?['statusCode']",
+                    "responseId": "@action()?['outputs']?['body']?['transactionId']"
                 },
                 "runtimeConfiguration": {
                     "contentTransfer": {
                         "transferMode": "Chunked"
                     }
                 },
-                "description": "Tracked properties on actions reference @action().inputs or @action().outputs for that action only."
+                "description": "Tracked properties on actions reference @action().inputs or @action()?['outputs'] for that action only."
             },
             "Return_Response": {
                 "type": "Response",
